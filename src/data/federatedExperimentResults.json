@@ -1,0 +1,3695 @@
+{
+  "metadata": {
+    "experiment_id": "EXP-URJA-FL-2026-R48",
+    "model_architecture": "MLP-AnomalyNet (30 -> 64 -> 32 -> 1, ReLU, Dropout 0.2)",
+    "task": "Electricity Consumption Anomaly & Theft Detection",
+    "total_rounds": 20,
+    "local_epochs": 3,
+    "random_seed": 42,
+    "timestamp": "2026-10-15T19:30:00Z",
+    "status": "completed",
+    "device": "CPU / Distributed Node Simulation"
+  },
+  "privacy_budget": {
+    "mechanism": "Renyi DP-FedAvg (Gaussian Mechanism)",
+    "clipping_norm_C": 1.0,
+    "noise_multiplier_sigma": 0.5,
+    "target_delta": 1e-05,
+    "achieved_epsilon": 10.0,
+    "raw_data_transmitted": false,
+    "secure_aggregation_status": "Simulated Bounded Updates (SecAgg planned for v2)"
+  },
+  "regional_clients": {
+    "NR": {
+      "client_id": "NR",
+      "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+      "profile_type": "residential-heavy",
+      "total_samples": 800,
+      "train_samples": 513,
+      "val_samples": 128,
+      "test_samples_contributed": 159,
+      "train_anomaly_rate": 0.12475633528265107,
+      "feature_dim": 30
+    },
+    "WR": {
+      "client_id": "WR",
+      "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+      "profile_type": "industrial-heavy",
+      "total_samples": 950,
+      "train_samples": 608,
+      "val_samples": 152,
+      "test_samples_contributed": 190,
+      "train_anomaly_rate": 0.07236842105263158,
+      "feature_dim": 30
+    },
+    "SR": {
+      "client_id": "SR",
+      "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+      "profile_type": "agricultural-tech-hybrid",
+      "total_samples": 850,
+      "train_samples": 545,
+      "val_samples": 136,
+      "test_samples_contributed": 169,
+      "train_anomaly_rate": 0.13761467889908258,
+      "feature_dim": 30
+    },
+    "ER": {
+      "client_id": "ER",
+      "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+      "profile_type": "commercial-mining-mixed",
+      "total_samples": 750,
+      "train_samples": 481,
+      "val_samples": 120,
+      "test_samples_contributed": 149,
+      "train_anomaly_rate": 0.18087318087318088,
+      "feature_dim": 30
+    },
+    "NER": {
+      "client_id": "NER",
+      "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+      "profile_type": "rural-seasonal",
+      "total_samples": 650,
+      "train_samples": 417,
+      "val_samples": 104,
+      "test_samples_contributed": 129,
+      "train_anomaly_rate": 0.07434052757793765,
+      "feature_dim": 30
+    }
+  },
+  "benchmarks": {
+    "centralized": {
+      "paradigm": "Centralized Pooled (Upper Bound)",
+      "privacy_guarantee": "None (Raw data fully pooled)",
+      "raw_data_exposure": "100% (All client records transmitted)",
+      "total_samples": 2564,
+      "epochs_trained": 20,
+      "final_loss": 0.14223749285617482,
+      "test_accuracy": 0.9711055276381909,
+      "test_precision": 1.0,
+      "test_recall": 0.7553191489361702,
+      "test_f1": 0.8606060606060607,
+      "test_roc_auc": 0.8932078559738135,
+      "confusion_matrix": {
+        "tp": 71,
+        "fp": 0,
+        "fn": 23,
+        "tn": 702
+      }
+    },
+    "local_only": {
+      "paradigm": "Local-Only Enclaves (Isolated)",
+      "privacy_guarantee": "High (Zero communication)",
+      "raw_data_exposure": "0% (Records never leave client)",
+      "average_test_f1": 0.4976907495531777,
+      "average_test_roc_auc": 0.8050160635267017,
+      "per_client_breakdown": {
+        "NR": {
+          "client_id": "NR",
+          "train_samples": 513,
+          "test_f1": 0.8536585365853657,
+          "test_roc_auc": 0.8876765472510153,
+          "test_precision": 1.0,
+          "test_recall": 0.7446808510638298,
+          "confusion_matrix": {
+            "tp": 70,
+            "fp": 0,
+            "fn": 24,
+            "tn": 702
+          }
+        },
+        "WR": {
+          "client_id": "WR",
+          "train_samples": 608,
+          "test_f1": 0.29931972789115646,
+          "test_roc_auc": 0.8407589258653089,
+          "test_precision": 0.17813765182186234,
+          "test_recall": 0.9361702127659575,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 406,
+            "fn": 6,
+            "tn": 296
+          }
+        },
+        "SR": {
+          "client_id": "SR",
+          "train_samples": 545,
+          "test_f1": 0.802547770700637,
+          "test_roc_auc": 0.8660059404740256,
+          "test_precision": 1.0,
+          "test_recall": 0.6702127659574468,
+          "confusion_matrix": {
+            "tp": 63,
+            "fp": 0,
+            "fn": 31,
+            "tn": 702
+          }
+        },
+        "ER": {
+          "client_id": "ER",
+          "train_samples": 481,
+          "test_f1": 0.30085470085470084,
+          "test_roc_auc": 0.8461538461538461,
+          "test_precision": 0.17922606924643583,
+          "test_recall": 0.9361702127659575,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 403,
+            "fn": 6,
+            "tn": 299
+          }
+        },
+        "NER": {
+          "client_id": "NER",
+          "train_samples": 417,
+          "test_f1": 0.23207301173402867,
+          "test_roc_auc": 0.5844850578893132,
+          "test_precision": 0.13224368499257058,
+          "test_recall": 0.9468085106382979,
+          "confusion_matrix": {
+            "tp": 89,
+            "fp": 584,
+            "fn": 5,
+            "tn": 118
+          }
+        }
+      }
+    },
+    "fedavg": {
+      "paradigm": "Federated FedAvg",
+      "privacy_guarantee": "Differential Privacy (L2-bounded + Gaussian noise)",
+      "raw_data_exposure": "0% (Only clipped parameter updates)",
+      "test_accuracy": 0.4861809045226131,
+      "test_precision": 0.17922606924643583,
+      "test_recall": 0.9361702127659575,
+      "test_f1": 0.30085470085470084,
+      "test_roc_auc": 0.8602624719645996,
+      "final_loss": 2.6633515081258605,
+      "confusion_matrix": {
+        "tp": 88,
+        "fp": 403,
+        "fn": 6,
+        "tn": 299
+      },
+      "rounds_history": [
+        {
+          "round": 1,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 4.333286803878309,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2285305976173749,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9663716814159292,
+              "raw_l2_norm": 3.2772911717722857,
+              "clipped": true,
+              "clip_factor": 0.30513004407664285
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.1943970968325933,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8773809523809524,
+              "raw_l2_norm": 3.2396732313325125,
+              "clipped": true,
+              "clip_factor": 0.3086731062935061
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.22788592972965152,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9250398724082934,
+              "raw_l2_norm": 3.2492812633297867,
+              "clipped": true,
+              "clip_factor": 0.30776036872457857
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.36225826215619844,
+              "val_f1": 0.8333333333333333,
+              "val_roc_auc": 0.911014911014911,
+              "raw_l2_norm": 3.0006208471168048,
+              "clipped": true,
+              "clip_factor": 0.33326436448230434
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.18552635583494392,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.997003745318352,
+              "raw_l2_norm": 2.981692283377959,
+              "clipped": true,
+              "clip_factor": 0.33538001397371564
+            }
+          ],
+          "test_loss": 0.46746883211872686,
+          "test_accuracy": 0.9158291457286433,
+          "test_precision": 1.0,
+          "test_recall": 0.2872340425531915,
+          "test_f1": 0.44628099173553726,
+          "test_roc_auc": 0.8189822391950051,
+          "confusion_matrix": {
+            "tp": 27,
+            "fp": 0,
+            "fn": 67,
+            "tn": 702
+          }
+        },
+        {
+          "round": 2,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 8.666573607756618,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.19622288596834622,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9864306784660767,
+              "raw_l2_norm": 3.033948146032439,
+              "clipped": true,
+              "clip_factor": 0.32960352370495144
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.15601228737974898,
+              "val_f1": 0.6666666666666666,
+              "val_roc_auc": 0.9232142857142858,
+              "raw_l2_norm": 3.151434587589644,
+              "clipped": true,
+              "clip_factor": 0.31731580392646774
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.19996241369733103,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9066985645933014,
+              "raw_l2_norm": 3.172189537711747,
+              "clipped": true,
+              "clip_factor": 0.3152396752452908
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.2616236536608388,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8999518999519,
+              "raw_l2_norm": 3.2062857021278273,
+              "clipped": true,
+              "clip_factor": 0.31188736519158916
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.18288235384083928,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9895131086142323,
+              "raw_l2_norm": 2.8072835110679297,
+              "clipped": true,
+              "clip_factor": 0.35621624809222413
+            }
+          ],
+          "test_loss": 0.4889639028343349,
+          "test_accuracy": 0.9484924623115578,
+          "test_precision": 1.0,
+          "test_recall": 0.5638297872340425,
+          "test_f1": 0.7210884353741497,
+          "test_roc_auc": 0.795417348608838,
+          "confusion_matrix": {
+            "tp": 53,
+            "fp": 0,
+            "fn": 41,
+            "tn": 702
+          }
+        },
+        {
+          "round": 3,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2008649379599328,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9368731563421829,
+              "raw_l2_norm": 2.868882948676556,
+              "clipped": true,
+              "clip_factor": 0.3485677239333665
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.1487890564297375,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9047619047619048,
+              "raw_l2_norm": 3.103760162664205,
+              "clipped": true,
+              "clip_factor": 0.3221898430513491
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.18896337430406773,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.886762360446571,
+              "raw_l2_norm": 3.0839052706569663,
+              "clipped": true,
+              "clip_factor": 0.3242641754241385
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.24171255296096206,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9095719095719096,
+              "raw_l2_norm": 3.032067173167954,
+              "clipped": true,
+              "clip_factor": 0.3298079965112961
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1632966733581963,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.9932584269662922,
+              "raw_l2_norm": 2.6803916547809927,
+              "clipped": true,
+              "clip_factor": 0.3730798063944231
+            }
+          ],
+          "test_loss": 0.7930715098513768,
+          "test_accuracy": 0.47110552763819097,
+          "test_precision": 0.15866388308977036,
+          "test_recall": 0.8085106382978723,
+          "test_f1": 0.26527050610820246,
+          "test_roc_auc": 0.7595471903982542,
+          "confusion_matrix": {
+            "tp": 76,
+            "fp": 403,
+            "fn": 18,
+            "tn": 299
+          }
+        },
+        {
+          "round": 4,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.23001474839653455,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.96047197640118,
+              "raw_l2_norm": 2.757572007989517,
+              "clipped": true,
+              "clip_factor": 0.362637855599078
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.13569728677210055,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8821428571428571,
+              "raw_l2_norm": 2.903413213764168,
+              "clipped": true,
+              "clip_factor": 0.34442221138723644
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.22686893583482337,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9425837320574163,
+              "raw_l2_norm": 2.6574259455025993,
+              "clipped": true,
+              "clip_factor": 0.37630399496779426
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.2234506905078888,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9028379028379029,
+              "raw_l2_norm": 3.0212328360062384,
+              "clipped": true,
+              "clip_factor": 0.33099070940553765
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.17334680556364002,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.9872659176029962,
+              "raw_l2_norm": 2.633540064647294,
+              "clipped": true,
+              "clip_factor": 0.37971702540026153
+            }
+          ],
+          "test_loss": 0.4936399622562917,
+          "test_accuracy": 0.6080402010050251,
+          "test_precision": 0.19722222222222222,
+          "test_recall": 0.7553191489361702,
+          "test_f1": 0.31277533039647576,
+          "test_roc_auc": 0.8162696247802631,
+          "confusion_matrix": {
+            "tp": 71,
+            "fp": 289,
+            "fn": 23,
+            "tn": 413
+          }
+        },
+        {
+          "round": 5,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.20869615107920825,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9740412979351032,
+              "raw_l2_norm": 2.920869164896494,
+              "clipped": true,
+              "clip_factor": 0.34236384555522287
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.13520972375153448,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.893452380952381,
+              "raw_l2_norm": 2.9633424637446333,
+              "clipped": true,
+              "clip_factor": 0.33745677791114675
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.1889323044775261,
+              "val_f1": 0.8108108108108109,
+              "val_roc_auc": 0.9258373205741627,
+              "raw_l2_norm": 3.051261308478195,
+              "clipped": true,
+              "clip_factor": 0.32773332028092106
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.23022826305289942,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9201539201539202,
+              "raw_l2_norm": 2.9367063909536744,
+              "clipped": true,
+              "clip_factor": 0.3405175276425028
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.17627887272586426,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.9595505617977528,
+              "raw_l2_norm": 2.619502733588156,
+              "clipped": true,
+              "clip_factor": 0.3817518442702531
+            }
+          ],
+          "test_loss": 0.6947053428651834,
+          "test_accuracy": 0.5590452261306532,
+          "test_precision": 0.19036144578313252,
+          "test_recall": 0.8404255319148937,
+          "test_f1": 0.3104125736738704,
+          "test_roc_auc": 0.8324392313754015,
+          "confusion_matrix": {
+            "tp": 79,
+            "fp": 336,
+            "fn": 15,
+            "tn": 366
+          }
+        },
+        {
+          "round": 6,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.20174761226072033,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9539823008849557,
+              "raw_l2_norm": 2.65705486427849,
+              "clipped": true,
+              "clip_factor": 0.3763565491505906
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11198289980785105,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8476190476190476,
+              "raw_l2_norm": 2.905363896519647,
+              "clipped": true,
+              "clip_factor": 0.3441909637734933
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.1882686197274813,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.919457735247209,
+              "raw_l2_norm": 2.805365776178833,
+              "clipped": true,
+              "clip_factor": 0.3564597558488906
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.20167873756145127,
+              "val_f1": 0.8333333333333333,
+              "val_roc_auc": 0.8965848965848966,
+              "raw_l2_norm": 2.7751090829575564,
+              "clipped": true,
+              "clip_factor": 0.36034619531925194
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.21479240736170183,
+              "val_f1": 0.7499999999999999,
+              "val_roc_auc": 0.9857677902621723,
+              "raw_l2_norm": 2.722409971111649,
+              "clipped": true,
+              "clip_factor": 0.367321604844235
+            }
+          ],
+          "test_loss": 1.7004866677930028,
+          "test_accuracy": 0.4861809045226131,
+          "test_precision": 0.17922606924643583,
+          "test_recall": 0.9361702127659575,
+          "test_f1": 0.30085470085470084,
+          "test_roc_auc": 0.8043886767291023,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 403,
+            "fn": 6,
+            "tn": 299
+          }
+        },
+        {
+          "round": 7,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2790701048558249,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9545722713864306,
+              "raw_l2_norm": 3.024713809335662,
+              "clipped": true,
+              "clip_factor": 0.33060979077852887
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10755477288100672,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9452380952380952,
+              "raw_l2_norm": 2.6586241324660316,
+              "clipped": true,
+              "clip_factor": 0.37613440253260105
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.22114165848190037,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9318181818181818,
+              "raw_l2_norm": 2.9371028861619943,
+              "clipped": true,
+              "clip_factor": 0.3404715593624506
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.20492427451180692,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9316979316979317,
+              "raw_l2_norm": 2.502280255170502,
+              "clipped": true,
+              "clip_factor": 0.3996354914818388
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.26528008727888974,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9677902621722847,
+              "raw_l2_norm": 3.03351065471588,
+              "clipped": true,
+              "clip_factor": 0.3296510589523574
+            }
+          ],
+          "test_loss": 1.1633676936336377,
+          "test_accuracy": 0.47613065326633164,
+          "test_precision": 0.16563146997929606,
+          "test_recall": 0.851063829787234,
+          "test_f1": 0.2772963604852686,
+          "test_roc_auc": 0.8176638176638177,
+          "confusion_matrix": {
+            "tp": 80,
+            "fp": 403,
+            "fn": 14,
+            "tn": 299
+          }
+        },
+        {
+          "round": 8,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.21182073342303434,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.967551622418879,
+              "raw_l2_norm": 2.501083683990408,
+              "clipped": true,
+              "clip_factor": 0.39982668552885114
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10861381741542891,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8845238095238095,
+              "raw_l2_norm": 2.548730550260304,
+              "clipped": true,
+              "clip_factor": 0.39235218470054317
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.21924101816559283,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9513556618819776,
+              "raw_l2_norm": 3.0266197057464814,
+              "clipped": true,
+              "clip_factor": 0.33040160208134234
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.20004266508234045,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.924001924001924,
+              "raw_l2_norm": 2.700352382017608,
+              "clipped": true,
+              "clip_factor": 0.3703220388157316
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.19801084418958495,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.952808988764045,
+              "raw_l2_norm": 2.628641452571241,
+              "clipped": true,
+              "clip_factor": 0.38042464811677223
+            }
+          ],
+          "test_loss": 0.9787009549412536,
+          "test_accuracy": 0.4861809045226131,
+          "test_precision": 0.17922606924643583,
+          "test_recall": 0.9361702127659575,
+          "test_f1": 0.30085470085470084,
+          "test_roc_auc": 0.8802964175304601,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 403,
+            "fn": 6,
+            "tn": 299
+          }
+        },
+        {
+          "round": 9,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.1854382625178379,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9699115044247788,
+              "raw_l2_norm": 2.7497885266117748,
+              "clipped": true,
+              "clip_factor": 0.3636643290778845
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11220715904869792,
+              "val_f1": 0.7368421052631579,
+              "val_roc_auc": 0.8184523809523809,
+              "raw_l2_norm": 2.54026631182857,
+              "clipped": true,
+              "clip_factor": 0.39365951315809344
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.27908888880025456,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9358054226475279,
+              "raw_l2_norm": 3.0634239584792766,
+              "clipped": true,
+              "clip_factor": 0.32643212732787424
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.20483768009580672,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9225589225589226,
+              "raw_l2_norm": 2.871178341895793,
+              "clipped": true,
+              "clip_factor": 0.3482890578616677
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.20174214966895956,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9430711610486892,
+              "raw_l2_norm": 2.7779935036332057,
+              "clipped": true,
+              "clip_factor": 0.3599720439706484
+            }
+          ],
+          "test_loss": 0.5164651380117986,
+          "test_accuracy": 0.8228643216080402,
+          "test_precision": 0.37566137566137564,
+          "test_recall": 0.7553191489361702,
+          "test_f1": 0.5017667844522967,
+          "test_roc_auc": 0.8593835242771413,
+          "confusion_matrix": {
+            "tp": 71,
+            "fp": 118,
+            "fn": 23,
+            "tn": 584
+          }
+        },
+        {
+          "round": 10,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.18094204004634828,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9162241887905604,
+              "raw_l2_norm": 2.555242598253846,
+              "clipped": true,
+              "clip_factor": 0.39135227328004357
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11751942794051086,
+              "val_f1": 0.7368421052631579,
+              "val_roc_auc": 0.8380952380952381,
+              "raw_l2_norm": 2.408788405899266,
+              "clipped": true,
+              "clip_factor": 0.4151464682974204
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.16265161588994992,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9346092503987241,
+              "raw_l2_norm": 2.604814984341791,
+              "clipped": true,
+              "clip_factor": 0.38390442531517643
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.21957312097462514,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8850408850408851,
+              "raw_l2_norm": 2.8118214104112242,
+              "clipped": true,
+              "clip_factor": 0.3556413632607308
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.24657241330437718,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9363295880149812,
+              "raw_l2_norm": 2.9775695752422613,
+              "clipped": true,
+              "clip_factor": 0.3358443772326608
+            }
+          ],
+          "test_loss": 0.5634662921063657,
+          "test_accuracy": 0.8190954773869347,
+          "test_precision": 0.37373737373737376,
+          "test_recall": 0.7872340425531915,
+          "test_f1": 0.5068493150684932,
+          "test_roc_auc": 0.8626720009698733,
+          "confusion_matrix": {
+            "tp": 74,
+            "fp": 124,
+            "fn": 20,
+            "tn": 578
+          }
+        },
+        {
+          "round": 11,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.17534278979634535,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9297935103244838,
+              "raw_l2_norm": 2.7385784834431783,
+              "clipped": true,
+              "clip_factor": 0.3651529454717545
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11311032671456862,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8988095238095238,
+              "raw_l2_norm": 2.53050009455877,
+              "clipped": true,
+              "clip_factor": 0.3951788034922741
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.1671174046135059,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.930622009569378,
+              "raw_l2_norm": 2.8704308757254453,
+              "clipped": true,
+              "clip_factor": 0.34837975305672175
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.21535337093519047,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8912938912938912,
+              "raw_l2_norm": 2.4606406385226167,
+              "clipped": true,
+              "clip_factor": 0.40639822976914164
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.23607607549499898,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9647940074906367,
+              "raw_l2_norm": 3.1667896252738683,
+              "clipped": true,
+              "clip_factor": 0.3157772122604265
+            }
+          ],
+          "test_loss": 0.26484336183905083,
+          "test_accuracy": 0.8793969849246231,
+          "test_precision": 0.4927536231884058,
+          "test_recall": 0.723404255319149,
+          "test_f1": 0.5862068965517242,
+          "test_roc_auc": 0.8799478693095715,
+          "confusion_matrix": {
+            "tp": 68,
+            "fp": 70,
+            "fn": 26,
+            "tn": 632
+          }
+        },
+        {
+          "round": 12,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.16639719881555615,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9345132743362832,
+              "raw_l2_norm": 2.6139045996879005,
+              "clipped": true,
+              "clip_factor": 0.3825694326169479
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10391196440660248,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8488095238095238,
+              "raw_l2_norm": 2.4654571495456614,
+              "clipped": true,
+              "clip_factor": 0.40560429118740815
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.18040289217606187,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9102870813397129,
+              "raw_l2_norm": 2.7027100746284187,
+              "clipped": true,
+              "clip_factor": 0.369998990649223
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.2043662798445158,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8936988936988937,
+              "raw_l2_norm": 2.7662831224283235,
+              "clipped": true,
+              "clip_factor": 0.36149589733992055
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.2884719126547376,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9955056179775281,
+              "raw_l2_norm": 2.806585997736284,
+              "clipped": true,
+              "clip_factor": 0.3563047775661491
+            }
+          ],
+          "test_loss": 0.43639822410911894,
+          "test_accuracy": 0.7889447236180904,
+          "test_precision": 0.33181818181818185,
+          "test_recall": 0.776595744680851,
+          "test_f1": 0.4649681528662421,
+          "test_roc_auc": 0.8787961447535916,
+          "confusion_matrix": {
+            "tp": 73,
+            "fp": 147,
+            "fn": 21,
+            "tn": 555
+          }
+        },
+        {
+          "round": 13,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.23127712244533147,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9581120943952802,
+              "raw_l2_norm": 2.591349238497794,
+              "clipped": true,
+              "clip_factor": 0.3858993549606617
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10494221720370678,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8178571428571428,
+              "raw_l2_norm": 2.7572435113631784,
+              "clipped": true,
+              "clip_factor": 0.3626810600935715
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.18285024887019838,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9421850079744817,
+              "raw_l2_norm": 2.811645243158859,
+              "clipped": true,
+              "clip_factor": 0.35566364642818343
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.20109943145265183,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8903318903318903,
+              "raw_l2_norm": 2.7453428849799866,
+              "clipped": true,
+              "clip_factor": 0.36425322501857055
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.2008774969726801,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9947565543071161,
+              "raw_l2_norm": 2.653526089896621,
+              "clipped": true,
+              "clip_factor": 0.376857044455177
+            }
+          ],
+          "test_loss": 0.8595560327072299,
+          "test_accuracy": 0.4861809045226131,
+          "test_precision": 0.17791411042944785,
+          "test_recall": 0.925531914893617,
+          "test_f1": 0.29845626072041165,
+          "test_roc_auc": 0.8860853488513063,
+          "confusion_matrix": {
+            "tp": 87,
+            "fp": 402,
+            "fn": 7,
+            "tn": 300
+          }
+        },
+        {
+          "round": 14,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.17784774915187382,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.91976401179941,
+              "raw_l2_norm": 2.8372218330291834,
+              "clipped": true,
+              "clip_factor": 0.35245745961988606
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10718856810739165,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8577380952380952,
+              "raw_l2_norm": 2.3869173804536983,
+              "clipped": true,
+              "clip_factor": 0.4189504034659853
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.18993260495847575,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.8333333333333334,
+              "raw_l2_norm": 2.8125526981975653,
+              "clipped": true,
+              "clip_factor": 0.35554889346084245
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.19681041183266523,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8879268879268879,
+              "raw_l2_norm": 2.3520664137875547,
+              "clipped": true,
+              "clip_factor": 0.4251580625925152
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.2091123832256666,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9872659176029962,
+              "raw_l2_norm": 2.767005571738156,
+              "clipped": true,
+              "clip_factor": 0.36140151283122507
+            }
+          ],
+          "test_loss": 1.2265276304993677,
+          "test_accuracy": 0.5100502512562815,
+          "test_precision": 0.1851063829787234,
+          "test_recall": 0.925531914893617,
+          "test_f1": 0.3085106382978723,
+          "test_roc_auc": 0.8859641146875189,
+          "confusion_matrix": {
+            "tp": 87,
+            "fp": 383,
+            "fn": 7,
+            "tn": 319
+          }
+        },
+        {
+          "round": 15,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.28374613002490473,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9657817109144543,
+              "raw_l2_norm": 2.7473625524816896,
+              "clipped": true,
+              "clip_factor": 0.36398545169537805
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.12008745728975585,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8333333333333334,
+              "raw_l2_norm": 2.3485705696348984,
+              "clipped": true,
+              "clip_factor": 0.425790909799941
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.20189344025372216,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9066985645933014,
+              "raw_l2_norm": 2.7039413611340373,
+              "clipped": true,
+              "clip_factor": 0.3698305052039915
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.2121091226314699,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.886002886002886,
+              "raw_l2_norm": 2.2260929506761125,
+              "clipped": true,
+              "clip_factor": 0.4492175401961813
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.2833596869826405,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.998501872659176,
+              "raw_l2_norm": 2.885583583325657,
+              "clipped": true,
+              "clip_factor": 0.34655034961799375
+            }
+          ],
+          "test_loss": 1.0164272063343005,
+          "test_accuracy": 0.5628140703517588,
+          "test_precision": 0.20327102803738317,
+          "test_recall": 0.925531914893617,
+          "test_f1": 0.3333333333333333,
+          "test_roc_auc": 0.8926016851548766,
+          "confusion_matrix": {
+            "tp": 87,
+            "fp": 341,
+            "fn": 7,
+            "tn": 361
+          }
+        },
+        {
+          "round": 16,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.24390465435663275,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9050147492625369,
+              "raw_l2_norm": 2.703351759212394,
+              "clipped": true,
+              "clip_factor": 0.3699111653606755
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10761848050108376,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8970238095238096,
+              "raw_l2_norm": 2.2622591488254424,
+              "clipped": true,
+              "clip_factor": 0.4420360063864304
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.22029106368966142,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9266347687400319,
+              "raw_l2_norm": 2.856177926121788,
+              "clipped": true,
+              "clip_factor": 0.3501182438615491
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.19718354226400456,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.873977873977874,
+              "raw_l2_norm": 2.760710171502749,
+              "clipped": true,
+              "clip_factor": 0.36222563670761576
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.23020844129393037,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9895131086142323,
+              "raw_l2_norm": 2.837471400706052,
+              "clipped": true,
+              "clip_factor": 0.35242645948739504
+            }
+          ],
+          "test_loss": 0.5644776822738067,
+          "test_accuracy": 0.6796482412060302,
+          "test_precision": 0.25382262996941896,
+          "test_recall": 0.8829787234042553,
+          "test_f1": 0.39429928741092635,
+          "test_roc_auc": 0.9027853549130145,
+          "confusion_matrix": {
+            "tp": 83,
+            "fp": 244,
+            "fn": 11,
+            "tn": 458
+          }
+        },
+        {
+          "round": 17,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.21381586507492353,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9297935103244838,
+              "raw_l2_norm": 2.6658055614369918,
+              "clipped": true,
+              "clip_factor": 0.375121131897494
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10679449533365602,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9119047619047619,
+              "raw_l2_norm": 2.47295370624907,
+              "clipped": true,
+              "clip_factor": 0.40437473498539794
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.19239374125997255,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9346092503987241,
+              "raw_l2_norm": 2.8620730647391768,
+              "clipped": true,
+              "clip_factor": 0.34939708981249706
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.29127622803207487,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8893698893698894,
+              "raw_l2_norm": 2.621791045194432,
+              "clipped": true,
+              "clip_factor": 0.3814186494577875
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.2768193084074959,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9655430711610486,
+              "raw_l2_norm": 2.9767056458805343,
+              "clipped": true,
+              "clip_factor": 0.33594184935549776
+            }
+          ],
+          "test_loss": 3.108506528238266,
+          "test_accuracy": 0.36055276381909546,
+          "test_precision": 0.15126050420168066,
+          "test_recall": 0.9574468085106383,
+          "test_f1": 0.2612481857764876,
+          "test_roc_auc": 0.8993301812450749,
+          "confusion_matrix": {
+            "tp": 90,
+            "fp": 505,
+            "fn": 4,
+            "tn": 197
+          }
+        },
+        {
+          "round": 18,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.30579880100284595,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9781710914454277,
+              "raw_l2_norm": 2.9090088456176044,
+              "clipped": true,
+              "clip_factor": 0.34375969710876997
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.117607846150477,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8130952380952381,
+              "raw_l2_norm": 2.4078911568753103,
+              "clipped": true,
+              "clip_factor": 0.4153011637296704
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.31248943922239253,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9027113237639554,
+              "raw_l2_norm": 2.9593926881661003,
+              "clipped": true,
+              "clip_factor": 0.3379071671227858
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.3036166092691322,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8787878787878788,
+              "raw_l2_norm": 3.0049752569473798,
+              "clipped": true,
+              "clip_factor": 0.3327814421617148
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.45287897710213226,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9872659176029962,
+              "raw_l2_norm": 3.287682436987698,
+              "clipped": true,
+              "clip_factor": 0.30416563000290053
+            }
+          ],
+          "test_loss": 1.7971486239940317,
+          "test_accuracy": 0.48743718592964824,
+          "test_precision": 0.17959183673469387,
+          "test_recall": 0.9361702127659575,
+          "test_f1": 0.3013698630136986,
+          "test_roc_auc": 0.900709219858156,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 402,
+            "fn": 6,
+            "tn": 300
+          }
+        },
+        {
+          "round": 19,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.246416625774502,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9404129793510324,
+              "raw_l2_norm": 2.4865781910767586,
+              "clipped": true,
+              "clip_factor": 0.40215908077469814
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10728975211008729,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8589285714285714,
+              "raw_l2_norm": 2.4471770753228257,
+              "clipped": true,
+              "clip_factor": 0.4086340991321391
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.25516324862412554,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9174641148325359,
+              "raw_l2_norm": 2.775769125828277,
+              "clipped": true,
+              "clip_factor": 0.3602605095412407
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.22570793459499205,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9076479076479076,
+              "raw_l2_norm": 2.5745888381657127,
+              "clipped": true,
+              "clip_factor": 0.38841153382924115
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.3751837431586214,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.997003745318352,
+              "raw_l2_norm": 3.3117964284242323,
+              "clipped": true,
+              "clip_factor": 0.30195092642631227
+            }
+          ],
+          "test_loss": 1.119841447682365,
+          "test_accuracy": 0.5326633165829145,
+          "test_precision": 0.19111111111111112,
+          "test_recall": 0.9148936170212766,
+          "test_f1": 0.31617647058823534,
+          "test_roc_auc": 0.888206946717585,
+          "confusion_matrix": {
+            "tp": 86,
+            "fp": 364,
+            "fn": 8,
+            "tn": 338
+          }
+        },
+        {
+          "round": 20,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedAvg",
+          "mu": 0.0,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.1984749577263845,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.903244837758112,
+              "raw_l2_norm": 2.5898060476539944,
+              "clipped": true,
+              "clip_factor": 0.3861293012732487
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10787388795921415,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8714285714285714,
+              "raw_l2_norm": 2.2115573687607744,
+              "clipped": true,
+              "clip_factor": 0.45217004707780684
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.22859731655895574,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9330143540669856,
+              "raw_l2_norm": 2.9334517606608435,
+              "clipped": true,
+              "clip_factor": 0.3408953278419776
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.21609278174469182,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8816738816738817,
+              "raw_l2_norm": 2.4760750096987567,
+              "clipped": true,
+              "clip_factor": 0.4038649861894921
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.3465558286933672,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9797752808988764,
+              "raw_l2_norm": 2.8268520096123866,
+              "clipped": true,
+              "clip_factor": 0.3537503895661549
+            }
+          ],
+          "test_loss": 2.6633515081258605,
+          "test_accuracy": 0.4861809045226131,
+          "test_precision": 0.17922606924643583,
+          "test_recall": 0.9361702127659575,
+          "test_f1": 0.30085470085470084,
+          "test_roc_auc": 0.8602624719645996,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 403,
+            "fn": 6,
+            "tn": 299
+          }
+        }
+      ]
+    },
+    "fedprox": {
+      "paradigm": "Federated FedProx (mu=0.01)",
+      "privacy_guarantee": "Differential Privacy (L2-bounded + Gaussian noise)",
+      "raw_data_exposure": "0% (Only clipped parameter updates)",
+      "test_accuracy": 0.4861809045226131,
+      "test_precision": 0.17922606924643583,
+      "test_recall": 0.9361702127659575,
+      "test_f1": 0.30085470085470084,
+      "test_roc_auc": 0.8544280778323331,
+      "final_loss": 2.560286258535533,
+      "confusion_matrix": {
+        "tp": 88,
+        "fp": 403,
+        "fn": 6,
+        "tn": 299
+      },
+      "rounds_history": [
+        {
+          "round": 1,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 4.333286803878309,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.24315261672817023,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9581120943952802,
+              "raw_l2_norm": 2.0938798723524146,
+              "clipped": true,
+              "clip_factor": 0.47758231631452003
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.21121284966928913,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8410714285714286,
+              "raw_l2_norm": 2.046979810861596,
+              "clipped": true,
+              "clip_factor": 0.4885246030299461
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.24061445377905058,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9266347687400319,
+              "raw_l2_norm": 1.99658616860104,
+              "clipped": true,
+              "clip_factor": 0.5008549168703402
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.37648522993549705,
+              "val_f1": 0.6875000000000001,
+              "val_roc_auc": 0.9268879268879269,
+              "raw_l2_norm": 2.0949311007875666,
+              "clipped": true,
+              "clip_factor": 0.47734266733007025
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.20042898878455162,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.9940074906367041,
+              "raw_l2_norm": 2.0817782542288485,
+              "clipped": true,
+              "clip_factor": 0.4803585576361353
+            }
+          ],
+          "test_loss": 0.4329136547506155,
+          "test_accuracy": 0.9183417085427136,
+          "test_precision": 1.0,
+          "test_recall": 0.30851063829787234,
+          "test_f1": 0.47154471544715443,
+          "test_roc_auc": 0.8296205370673456,
+          "confusion_matrix": {
+            "tp": 29,
+            "fp": 0,
+            "fn": 65,
+            "tn": 702
+          }
+        },
+        {
+          "round": 2,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 8.666573607756618,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2103003815693014,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.967551622418879,
+              "raw_l2_norm": 1.789033902056969,
+              "clipped": true,
+              "clip_factor": 0.5589608996739938
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.1644757461587065,
+              "val_f1": 0.5882352941176471,
+              "val_roc_auc": 0.8315476190476191,
+              "raw_l2_norm": 1.929738513993991,
+              "clipped": true,
+              "clip_factor": 0.518204923739688
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.2044036744714335,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9146730462519936,
+              "raw_l2_norm": 1.6964076325403854,
+              "clipped": true,
+              "clip_factor": 0.5894809597814707
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.27248881679649156,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8965848965848966,
+              "raw_l2_norm": 1.9128246567554932,
+              "clipped": true,
+              "clip_factor": 0.522787070913964
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.18897973258225695,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9955056179775281,
+              "raw_l2_norm": 1.6175128744796734,
+              "clipped": true,
+              "clip_factor": 0.6182331004341773
+            }
+          ],
+          "test_loss": 0.39356575897384677,
+          "test_accuracy": 0.9384422110552764,
+          "test_precision": 1.0,
+          "test_recall": 0.4787234042553192,
+          "test_f1": 0.6474820143884892,
+          "test_roc_auc": 0.8034188034188035,
+          "confusion_matrix": {
+            "tp": 45,
+            "fp": 0,
+            "fn": 49,
+            "tn": 702
+          }
+        },
+        {
+          "round": 3,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.20296524198470164,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.9303834808259587,
+              "raw_l2_norm": 1.4902604655916643,
+              "clipped": true,
+              "clip_factor": 0.6710236380939997
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.15258517671833957,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8321428571428572,
+              "raw_l2_norm": 1.6044749176414461,
+              "clipped": true,
+              "clip_factor": 0.6232568601612845
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.1926058944038771,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9350079744816587,
+              "raw_l2_norm": 1.6117295448738824,
+              "clipped": true,
+              "clip_factor": 0.6204514911078324
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.24649746584085128,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8961038961038961,
+              "raw_l2_norm": 1.7574289773987426,
+              "clipped": true,
+              "clip_factor": 0.5690130368233351
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.16276821041745798,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.997003745318352,
+              "raw_l2_norm": 1.642077069342021,
+              "clipped": true,
+              "clip_factor": 0.6089848144531452
+            }
+          ],
+          "test_loss": 0.947593991102384,
+          "test_accuracy": 0.47361809045226133,
+          "test_precision": 0.16216216216216217,
+          "test_recall": 0.8297872340425532,
+          "test_f1": 0.271304347826087,
+          "test_roc_auc": 0.7710947444989998,
+          "confusion_matrix": {
+            "tp": 78,
+            "fp": 403,
+            "fn": 16,
+            "tn": 299
+          }
+        },
+        {
+          "round": 4,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.24962675695617995,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.9622418879056047,
+              "raw_l2_norm": 1.4324708224025504,
+              "clipped": true,
+              "clip_factor": 0.6980944977466963
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.13972856525919938,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.888095238095238,
+              "raw_l2_norm": 1.5828714514233098,
+              "clipped": true,
+              "clip_factor": 0.6317632417143173
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.23774572385957948,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9457735247208932,
+              "raw_l2_norm": 1.2598905617723177,
+              "clipped": true,
+              "clip_factor": 0.7937197321325724
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.22897829938059053,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9081289081289081,
+              "raw_l2_norm": 1.6318977193136577,
+              "clipped": true,
+              "clip_factor": 0.6127835020247444
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.19237786291965417,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9730337078651685,
+              "raw_l2_norm": 1.5824473018848397,
+              "clipped": true,
+              "clip_factor": 0.6319325756863914
+            }
+          ],
+          "test_loss": 0.5341481838646844,
+          "test_accuracy": 0.585427135678392,
+          "test_precision": 0.19743589743589743,
+          "test_recall": 0.8191489361702128,
+          "test_f1": 0.3181818181818182,
+          "test_roc_auc": 0.8351215372491968,
+          "confusion_matrix": {
+            "tp": 77,
+            "fp": 313,
+            "fn": 17,
+            "tn": 389
+          }
+        },
+        {
+          "round": 5,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2193283828011915,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9722713864306785,
+              "raw_l2_norm": 1.4324910474466668,
+              "clipped": true,
+              "clip_factor": 0.6980846414952178
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.12878649685074361,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.7803571428571429,
+              "raw_l2_norm": 1.3657416734035854,
+              "clipped": true,
+              "clip_factor": 0.7322028892738419
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.20152612699678651,
+              "val_f1": 0.8108108108108109,
+              "val_roc_auc": 0.9282296650717703,
+              "raw_l2_norm": 1.6039446487759488,
+              "clipped": true,
+              "clip_factor": 0.6234629107305465
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.24447716710468134,
+              "val_f1": 0.8333333333333333,
+              "val_roc_auc": 0.9081289081289081,
+              "raw_l2_norm": 1.403016924768793,
+              "clipped": true,
+              "clip_factor": 0.7127497763093934
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1766561326748204,
+              "val_f1": 0.7499999999999999,
+              "val_roc_auc": 0.9692883895131086,
+              "raw_l2_norm": 1.4944326637965082,
+              "clipped": true,
+              "clip_factor": 0.6691502558505482
+            }
+          ],
+          "test_loss": 0.30975056855853994,
+          "test_accuracy": 0.8919597989949749,
+          "test_precision": 0.53125,
+          "test_recall": 0.723404255319149,
+          "test_f1": 0.6126126126126127,
+          "test_roc_auc": 0.867506213250894,
+          "confusion_matrix": {
+            "tp": 68,
+            "fp": 60,
+            "fn": 26,
+            "tn": 642
+          }
+        },
+        {
+          "round": 6,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.20373662542916982,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.95929203539823,
+              "raw_l2_norm": 1.308733358024994,
+              "clipped": true,
+              "clip_factor": 0.7640975857335827
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11492116089191352,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8785714285714286,
+              "raw_l2_norm": 1.3183670117596118,
+              "clipped": true,
+              "clip_factor": 0.7585141241563648
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.17871764523011668,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9178628389154705,
+              "raw_l2_norm": 1.2048174233250126,
+              "clipped": true,
+              "clip_factor": 0.8300012763844615
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.2103166066420575,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8855218855218855,
+              "raw_l2_norm": 1.3113700569801303,
+              "clipped": true,
+              "clip_factor": 0.7625612571483249
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1642184151735689,
+              "val_f1": 0.7499999999999999,
+              "val_roc_auc": 0.9602996254681648,
+              "raw_l2_norm": 1.753441449536349,
+              "clipped": true,
+              "clip_factor": 0.5703070380217807
+            }
+          ],
+          "test_loss": 1.096571920563742,
+          "test_accuracy": 0.4886934673366834,
+          "test_precision": 0.17864476386036962,
+          "test_recall": 0.925531914893617,
+          "test_f1": 0.29948364888123924,
+          "test_roc_auc": 0.8329544765714978,
+          "confusion_matrix": {
+            "tp": 87,
+            "fp": 400,
+            "fn": 7,
+            "tn": 302
+          }
+        },
+        {
+          "round": 7,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2501593778530757,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9628318584070796,
+              "raw_l2_norm": 1.5120668698114994,
+              "clipped": true,
+              "clip_factor": 0.6613464121883166
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10703345680642024,
+              "val_f1": 0.6666666666666666,
+              "val_roc_auc": 0.9035714285714286,
+              "raw_l2_norm": 1.0216844640086256,
+              "clipped": true,
+              "clip_factor": 0.9787757710415588
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.21309677680471428,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9250398724082934,
+              "raw_l2_norm": 1.2874132533983127,
+              "clipped": true,
+              "clip_factor": 0.7767513629237578
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.20423976617166772,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9114959114959115,
+              "raw_l2_norm": 1.102769230933168,
+              "clipped": true,
+              "clip_factor": 0.9068080347571791
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.20571859659893174,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9408239700374532,
+              "raw_l2_norm": 1.6174895258905364,
+              "clipped": true,
+              "clip_factor": 0.6182420246778358
+            }
+          ],
+          "test_loss": 0.5345915065178904,
+          "test_accuracy": 0.6608040201005025,
+          "test_precision": 0.2267080745341615,
+          "test_recall": 0.776595744680851,
+          "test_f1": 0.35096153846153844,
+          "test_roc_auc": 0.8293477601988241,
+          "confusion_matrix": {
+            "tp": 73,
+            "fp": 249,
+            "fn": 21,
+            "tn": 453
+          }
+        },
+        {
+          "round": 8,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.1905745142413413,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9410029498525073,
+              "raw_l2_norm": 1.5156914962404726,
+              "clipped": true,
+              "clip_factor": 0.6597648676004577
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11770032389546957,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9154761904761904,
+              "raw_l2_norm": 1.32477833601761,
+              "clipped": true,
+              "clip_factor": 0.7548432609875226
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.20542964777322834,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9134768740031898,
+              "raw_l2_norm": 1.3595466121622337,
+              "clipped": true,
+              "clip_factor": 0.7355393263597286
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.20551152610763287,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.911976911976912,
+              "raw_l2_norm": 1.2417806026993299,
+              "clipped": true,
+              "clip_factor": 0.8052952325241248
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.16362297160196163,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9400749063670412,
+              "raw_l2_norm": 1.6383722507119445,
+              "clipped": true,
+              "clip_factor": 0.6103618997179024
+            }
+          ],
+          "test_loss": 0.6136223660302867,
+          "test_accuracy": 0.542713567839196,
+          "test_precision": 0.19318181818181818,
+          "test_recall": 0.9042553191489362,
+          "test_f1": 0.31835205992509363,
+          "test_roc_auc": 0.8951172940534643,
+          "confusion_matrix": {
+            "tp": 85,
+            "fp": 355,
+            "fn": 9,
+            "tn": 347
+          }
+        },
+        {
+          "round": 9,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.1911534367896178,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9752212389380531,
+              "raw_l2_norm": 1.4294720875885276,
+              "clipped": true,
+              "clip_factor": 0.6995589546539577
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11002640684314986,
+              "val_f1": 0.6666666666666666,
+              "val_roc_auc": 0.888095238095238,
+              "raw_l2_norm": 1.2605290268251952,
+              "clipped": true,
+              "clip_factor": 0.7933177086173978
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.28069633097146396,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9525518341307815,
+              "raw_l2_norm": 1.4316797102529357,
+              "clipped": true,
+              "clip_factor": 0.698480248158891
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.21330712751174966,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9009139009139009,
+              "raw_l2_norm": 1.2984210831685807,
+              "clipped": true,
+              "clip_factor": 0.77016617505124
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1568727158010006,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9632958801498127,
+              "raw_l2_norm": 1.4063850706557326,
+              "clipped": true,
+              "clip_factor": 0.7110428147695732
+            }
+          ],
+          "test_loss": 0.2042992230352084,
+          "test_accuracy": 0.9510050251256281,
+          "test_precision": 0.9824561403508771,
+          "test_recall": 0.5957446808510638,
+          "test_f1": 0.7417218543046357,
+          "test_roc_auc": 0.8515184579014367,
+          "confusion_matrix": {
+            "tp": 56,
+            "fp": 1,
+            "fn": 38,
+            "tn": 701
+          }
+        },
+        {
+          "round": 10,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.1794956487000865,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9427728613569322,
+              "raw_l2_norm": 1.3505753017785629,
+              "clipped": true,
+              "clip_factor": 0.7404252083854058
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.12205369664323433,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.825,
+              "raw_l2_norm": 1.441557736133607,
+              "clipped": true,
+              "clip_factor": 0.6936940326707965
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.16820680738116303,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.8879585326953748,
+              "raw_l2_norm": 1.1555153287999271,
+              "clipped": true,
+              "clip_factor": 0.8654147411208694
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.21521248757683983,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8725348725348725,
+              "raw_l2_norm": 1.48543632709476,
+              "clipped": true,
+              "clip_factor": 0.6732028704876317
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1801728556110036,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9797752808988764,
+              "raw_l2_norm": 1.5847640813506574,
+              "clipped": true,
+              "clip_factor": 0.631008748328467
+            }
+          ],
+          "test_loss": 0.23334298918681,
+          "test_accuracy": 0.949748743718593,
+          "test_precision": 0.8648648648648649,
+          "test_recall": 0.6808510638297872,
+          "test_f1": 0.7619047619047619,
+          "test_roc_auc": 0.884084985148815,
+          "confusion_matrix": {
+            "tp": 64,
+            "fp": 10,
+            "fn": 30,
+            "tn": 692
+          }
+        },
+        {
+          "round": 11,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.16884850582801827,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9415929203539823,
+              "raw_l2_norm": 1.200700119066462,
+              "clipped": true,
+              "clip_factor": 0.8328474223394325
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10750651323612322,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8678571428571429,
+              "raw_l2_norm": 1.3451120285588087,
+              "clipped": true,
+              "clip_factor": 0.7434325008066398
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.16634675053258738,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9174641148325359,
+              "raw_l2_norm": 1.145337660627553,
+              "clipped": true,
+              "clip_factor": 0.873104965900602
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.21197559005425623,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8898508898508899,
+              "raw_l2_norm": 1.2984904470309544,
+              "clipped": true,
+              "clip_factor": 0.7701250336622893
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1844794673268639,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9625468164794008,
+              "raw_l2_norm": 1.7083632241559932,
+              "clipped": true,
+              "clip_factor": 0.5853556113095846
+            }
+          ],
+          "test_loss": 0.22422598223065437,
+          "test_accuracy": 0.964824120603015,
+          "test_precision": 1.0,
+          "test_recall": 0.7021276595744681,
+          "test_f1": 0.825,
+          "test_roc_auc": 0.8954658422743529,
+          "confusion_matrix": {
+            "tp": 66,
+            "fp": 0,
+            "fn": 28,
+            "tn": 702
+          }
+        },
+        {
+          "round": 12,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.17665230163245224,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9793510324483776,
+              "raw_l2_norm": 1.2561071341604266,
+              "clipped": true,
+              "clip_factor": 0.7961104367680251
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10720895599214393,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.7339285714285714,
+              "raw_l2_norm": 1.1059365253450066,
+              "clipped": true,
+              "clip_factor": 0.9042110249354773
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.19133108436923338,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9302232854864434,
+              "raw_l2_norm": 1.3204372181237236,
+              "clipped": true,
+              "clip_factor": 0.7573249114135285
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.20809742791849808,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8884078884078884,
+              "raw_l2_norm": 1.1523412564679267,
+              "clipped": true,
+              "clip_factor": 0.8677984872270644
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.26180260490980883,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9880149812734083,
+              "raw_l2_norm": 1.6098594985674823,
+              "clipped": true,
+              "clip_factor": 0.6211722204755558
+            }
+          ],
+          "test_loss": 0.4254800688978553,
+          "test_accuracy": 0.7562814070351759,
+          "test_precision": 0.30158730158730157,
+          "test_recall": 0.8085106382978723,
+          "test_f1": 0.4393063583815029,
+          "test_roc_auc": 0.8890555858640965,
+          "confusion_matrix": {
+            "tp": 76,
+            "fp": 176,
+            "fn": 18,
+            "tn": 526
+          }
+        },
+        {
+          "round": 13,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.26092295848088815,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9079646017699115,
+              "raw_l2_norm": 1.1979166472560143,
+              "clipped": true,
+              "clip_factor": 0.8347826215253364
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10931159143352455,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.7732142857142857,
+              "raw_l2_norm": 1.2909753346353383,
+              "clipped": true,
+              "clip_factor": 0.7746081372715473
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.20037056553970886,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9310207336523126,
+              "raw_l2_norm": 1.466704358490906,
+              "clipped": true,
+              "clip_factor": 0.681800659777885
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.22119856206700206,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8845598845598845,
+              "raw_l2_norm": 1.2866192901646987,
+              "clipped": true,
+              "clip_factor": 0.7772306904358324
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1740887371069264,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9902621722846442,
+              "raw_l2_norm": 1.6708758494208191,
+              "clipped": true,
+              "clip_factor": 0.5984885111291449
+            }
+          ],
+          "test_loss": 0.9486500219366673,
+          "test_accuracy": 0.4861809045226131,
+          "test_precision": 0.17922606924643583,
+          "test_recall": 0.9361702127659575,
+          "test_f1": 0.30085470085470084,
+          "test_roc_auc": 0.8967842638055404,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 403,
+            "fn": 6,
+            "tn": 299
+          }
+        },
+        {
+          "round": 14,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.20261032579868446,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9693215339233038,
+              "raw_l2_norm": 1.4105542077833533,
+              "clipped": true,
+              "clip_factor": 0.7089412046507103
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10919227637350559,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9113095238095238,
+              "raw_l2_norm": 1.0701200355888187,
+              "clipped": true,
+              "clip_factor": 0.9344746064073917
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.21206057354531907,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.8692185007974481,
+              "raw_l2_norm": 1.585176186876267,
+              "clipped": true,
+              "clip_factor": 0.6308447020893908
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.2030652949567108,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.9057239057239057,
+              "raw_l2_norm": 1.231110141474215,
+              "clipped": true,
+              "clip_factor": 0.8122750073281477
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1864280252761784,
+              "val_f1": 0.9655172413793104,
+              "val_roc_auc": 0.9700374531835206,
+              "raw_l2_norm": 1.5069018421660696,
+              "clipped": true,
+              "clip_factor": 0.6636132303740198
+            }
+          ],
+          "test_loss": 0.9481712472728078,
+          "test_accuracy": 0.49874371859296485,
+          "test_precision": 0.18162839248434237,
+          "test_recall": 0.925531914893617,
+          "test_f1": 0.3036649214659686,
+          "test_roc_auc": 0.8972692004606898,
+          "confusion_matrix": {
+            "tp": 87,
+            "fp": 392,
+            "fn": 7,
+            "tn": 310
+          }
+        },
+        {
+          "round": 15,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2795508837729108,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.952212389380531,
+              "raw_l2_norm": 1.4614161096823046,
+              "clipped": true,
+              "clip_factor": 0.6842678089357594
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.12281693336798956,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9047619047619048,
+              "raw_l2_norm": 1.0033367104053452,
+              "clipped": true,
+              "clip_factor": 0.9966743852114495
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.21265855357395833,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.8907496012759171,
+              "raw_l2_norm": 1.4522373252265586,
+              "clipped": true,
+              "clip_factor": 0.6885926851903498
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.19503475997286537,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8672438672438673,
+              "raw_l2_norm": 1.2582203362416124,
+              "clipped": true,
+              "clip_factor": 0.7947733559865141
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.22216573781112117,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.9880149812734083,
+              "raw_l2_norm": 1.653293169834088,
+              "clipped": true,
+              "clip_factor": 0.6048534026760051
+            }
+          ],
+          "test_loss": 0.7550021082948937,
+          "test_accuracy": 0.6557788944723618,
+          "test_precision": 0.2398843930635838,
+          "test_recall": 0.8829787234042553,
+          "test_f1": 0.37727272727272726,
+          "test_roc_auc": 0.9000878947687458,
+          "confusion_matrix": {
+            "tp": 83,
+            "fp": 263,
+            "fn": 11,
+            "tn": 439
+          }
+        },
+        {
+          "round": 16,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.27722958765704836,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9646017699115044,
+              "raw_l2_norm": 1.3113508282371455,
+              "clipped": true,
+              "clip_factor": 0.7625724388200004
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10842484195324542,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8184523809523809,
+              "raw_l2_norm": 1.0756832001779963,
+              "clipped": true,
+              "clip_factor": 0.9296417373673637
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.2623374145995412,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9485645933014354,
+              "raw_l2_norm": 1.5882224835048495,
+              "clipped": true,
+              "clip_factor": 0.6296347078298441
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.21372538630384952,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8917748917748918,
+              "raw_l2_norm": 1.2332385770483894,
+              "clipped": true,
+              "clip_factor": 0.8108731090641914
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.1312389812831368,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.9835205992509364,
+              "raw_l2_norm": 1.3347362116085355,
+              "clipped": true,
+              "clip_factor": 0.7492117098146717
+            }
+          ],
+          "test_loss": 0.5007271092735176,
+          "test_accuracy": 0.7211055276381909,
+          "test_precision": 0.2762237762237762,
+          "test_recall": 0.8404255319148937,
+          "test_f1": 0.4157894736842105,
+          "test_roc_auc": 0.9003152088258471,
+          "confusion_matrix": {
+            "tp": 79,
+            "fp": 207,
+            "fn": 15,
+            "tn": 495
+          }
+        },
+        {
+          "round": 17,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.24164571864165219,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.8884955752212389,
+              "raw_l2_norm": 1.6237765005045177,
+              "clipped": true,
+              "clip_factor": 0.6158483012122945
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11149384873396341,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8648809523809524,
+              "raw_l2_norm": 1.0868590099640068,
+              "clipped": true,
+              "clip_factor": 0.9200825405247679
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.205933750503593,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9393939393939394,
+              "raw_l2_norm": 1.4062582299510509,
+              "clipped": true,
+              "clip_factor": 0.7111069489162748
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.29240347153972834,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8912938912938912,
+              "raw_l2_norm": 1.413277846214012,
+              "clipped": true,
+              "clip_factor": 0.7075749485292614
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.20213583862364648,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9535580524344569,
+              "raw_l2_norm": 1.6441133314269598,
+              "clipped": true,
+              "clip_factor": 0.6082305764918583
+            }
+          ],
+          "test_loss": 1.9780962201062178,
+          "test_accuracy": 0.4849246231155779,
+          "test_precision": 0.17886178861788618,
+          "test_recall": 0.9361702127659575,
+          "test_f1": 0.3003412969283277,
+          "test_roc_auc": 0.9037249196823665,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 404,
+            "fn": 6,
+            "tn": 298
+          }
+        },
+        {
+          "round": 18,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2988475697188108,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9445427728613569,
+              "raw_l2_norm": 1.5791855944693605,
+              "clipped": true,
+              "clip_factor": 0.633237792232257
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.11002632502564474,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8577380952380952,
+              "raw_l2_norm": 1.2664826451497155,
+              "clipped": true,
+              "clip_factor": 0.7895883951036675
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.32430036716094174,
+              "val_f1": 0.8421052631578948,
+              "val_roc_auc": 0.9055023923444976,
+              "raw_l2_norm": 1.7928230941485266,
+              "clipped": true,
+              "clip_factor": 0.5577795169562755
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.26288603657546145,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8864838864838864,
+              "raw_l2_norm": 1.3715778832715682,
+              "clipped": true,
+              "clip_factor": 0.729087288055166
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.28180634050763076,
+              "val_f1": 0.888888888888889,
+              "val_roc_auc": 0.9685393258426966,
+              "raw_l2_norm": 1.6141761508271004,
+              "clipped": true,
+              "clip_factor": 0.6195110731056774
+            }
+          ],
+          "test_loss": 0.7605685630868434,
+          "test_accuracy": 0.5778894472361809,
+          "test_precision": 0.20631067961165048,
+          "test_recall": 0.9042553191489362,
+          "test_f1": 0.3359683794466403,
+          "test_roc_auc": 0.9073619445959872,
+          "confusion_matrix": {
+            "tp": 85,
+            "fp": 327,
+            "fn": 9,
+            "tn": 375
+          }
+        },
+        {
+          "round": 19,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.2264759246917332,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9516224188790561,
+              "raw_l2_norm": 1.4428848562279133,
+              "clipped": true,
+              "clip_factor": 0.6930559947251863
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.10387379988178351,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8333333333333334,
+              "raw_l2_norm": 1.0429489497650553,
+              "clipped": true,
+              "clip_factor": 0.9588196999157532
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.2291501219453359,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9106858054226475,
+              "raw_l2_norm": 1.5368688870322957,
+              "clipped": true,
+              "clip_factor": 0.6506735921242658
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.218755081257162,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8840788840788841,
+              "raw_l2_norm": 1.373664855970273,
+              "clipped": true,
+              "clip_factor": 0.72797960501485
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.238788691571071,
+              "val_f1": 0.846153846153846,
+              "val_roc_auc": 0.9880149812734083,
+              "raw_l2_norm": 1.7857247165382337,
+              "clipped": true,
+              "clip_factor": 0.5599967285991209
+            }
+          ],
+          "test_loss": 0.4050173390407342,
+          "test_accuracy": 0.7826633165829145,
+          "test_precision": 0.3333333333333333,
+          "test_recall": 0.8404255319148937,
+          "test_f1": 0.4773413897280967,
+          "test_roc_auc": 0.9076650300054555,
+          "confusion_matrix": {
+            "tp": 79,
+            "fp": 158,
+            "fn": 15,
+            "tn": 544
+          }
+        },
+        {
+          "round": 20,
+          "participating_clients": [
+            "NR",
+            "WR",
+            "SR",
+            "ER",
+            "NER"
+          ],
+          "client_count": 5,
+          "algorithm": "FedProx",
+          "mu": 0.01,
+          "dp_sigma": 0.5,
+          "l2_clip_norm": 1.0,
+          "estimated_dp_epsilon": 10.0,
+          "client_reports": [
+            {
+              "client_id": "NR",
+              "region_name": "Northern Regional Grid (Delhi / UP / Punjab)",
+              "sample_count": 513,
+              "train_loss": 0.18889351499577364,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9126843657817109,
+              "raw_l2_norm": 1.4989006484274692,
+              "clipped": true,
+              "clip_factor": 0.6671556252790785
+            },
+            {
+              "client_id": "WR",
+              "region_name": "Western Regional Grid (Maharashtra / Gujarat)",
+              "sample_count": 608,
+              "train_loss": 0.1101659926291751,
+              "val_f1": 0.8,
+              "val_roc_auc": 0.8422619047619048,
+              "raw_l2_norm": 1.209408408286327,
+              "clipped": true,
+              "clip_factor": 0.826850543060223
+            },
+            {
+              "client_id": "SR",
+              "region_name": "Southern Regional Grid (Karnataka / Tamil Nadu)",
+              "sample_count": 545,
+              "train_loss": 0.21949624061515483,
+              "val_f1": 0.8717948717948718,
+              "val_roc_auc": 0.9461722488038278,
+              "raw_l2_norm": 1.6601408999098046,
+              "clipped": true,
+              "clip_factor": 0.6023585103240161
+            },
+            {
+              "client_id": "ER",
+              "region_name": "Eastern Regional Grid (West Bengal / Bihar / Odisha)",
+              "sample_count": 481,
+              "train_loss": 0.23099352967498513,
+              "val_f1": 0.8648648648648648,
+              "val_roc_auc": 0.8835978835978836,
+              "raw_l2_norm": 1.3860689531207089,
+              "clipped": true,
+              "clip_factor": 0.7214648283024112
+            },
+            {
+              "client_id": "NER",
+              "region_name": "North-Eastern Regional Grid (Assam / Meghalaya)",
+              "sample_count": 417,
+              "train_loss": 0.2067308864733648,
+              "val_f1": 0.9285714285714286,
+              "val_roc_auc": 0.9632958801498127,
+              "raw_l2_norm": 1.8936376655122422,
+              "clipped": true,
+              "clip_factor": 0.5280841301820055
+            }
+          ],
+          "test_loss": 2.560286258535533,
+          "test_accuracy": 0.4861809045226131,
+          "test_precision": 0.17922606924643583,
+          "test_recall": 0.9361702127659575,
+          "test_f1": 0.30085470085470084,
+          "test_roc_auc": 0.8544280778323331,
+          "confusion_matrix": {
+            "tp": 88,
+            "fp": 403,
+            "fn": 6,
+            "tn": 299
+          }
+        }
+      ]
+    }
+  },
+  "non_iid_drift": {
+    "client_feature_profiles": {
+      "NR": {
+        "mean_load": 0.5531813502311707,
+        "var_load": 0.04440261423587799,
+        "par": 1.8151562213897705,
+        "night_day": 2279.675537109375,
+        "anomaly_rate": 0.12475633528265107
+      },
+      "WR": {
+        "mean_load": 0.8043954372406006,
+        "var_load": 0.0247371606528759,
+        "par": 1.2526596784591675,
+        "night_day": 1016.2341918945312,
+        "anomaly_rate": 0.07236842105263158
+      },
+      "SR": {
+        "mean_load": 0.5531784296035767,
+        "var_load": 0.05655978247523308,
+        "par": 1.8215528726577759,
+        "night_day": 2665.048828125,
+        "anomaly_rate": 0.13761467889908258
+      },
+      "ER": {
+        "mean_load": 0.5377008318901062,
+        "var_load": 0.06642549484968185,
+        "par": 1.8764349222183228,
+        "night_day": 3495.6455078125,
+        "anomaly_rate": 0.18087318087318088
+      },
+      "NER": {
+        "mean_load": 0.366438090801239,
+        "var_load": 0.058592673391103745,
+        "par": 2.7535929679870605,
+        "night_day": 1085.9599609375,
+        "anomaly_rate": 0.07434052757793765
+      }
+    },
+    "pairwise_divergence": {
+      "NR": {
+        "NR": 0.0,
+        "WR": 1263.4414954041886,
+        "SR": 385.3732910687127,
+        "ER": 1215.9699723457336,
+        "NER": 1193.7159596536874
+      },
+      "WR": {
+        "NR": 1263.4414954041886,
+        "WR": 0.0,
+        "SR": 1648.8147535115231,
+        "ER": 2479.4114087266034,
+        "NER": 69.74329699698984
+      },
+      "SR": {
+        "NR": 385.3732910687127,
+        "WR": 1648.8147535115231,
+        "SR": 0.0,
+        "ER": 830.5966816448853,
+        "NER": 1579.089153292554
+      },
+      "ER": {
+        "NR": 1215.9699723457336,
+        "WR": 2479.4114087266034,
+        "SR": 830.5966816448853,
+        "ER": 0.0,
+        "NER": 2409.6857126097234
+      },
+      "NER": {
+        "NR": 1193.7159596536874,
+        "WR": 69.74329699698984,
+        "SR": 1579.089153292554,
+        "ER": 2409.6857126097234,
+        "NER": 0.0
+      }
+    },
+    "dirichlet_alpha": 0.5,
+    "non_iid_level": "Severe (Heterogeneous load types across 5 climatic & economic zones)"
+  }
+}

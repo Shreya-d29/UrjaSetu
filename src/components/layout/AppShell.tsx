@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { OverviewPage } from '../overview/OverviewPage';
+import { FederatedLearningView } from '../federated/FederatedLearningView';
+import { ExperimentsView } from '../experiments/ExperimentsView';
+import { DriftHealthView } from '../drift/DriftHealthView';
 import { SectionPlaceholder } from '../placeholders/SectionPlaceholder';
 import { NAV_ITEMS } from '../../constants/navigation';
 import type { NavItemId } from '../../types';
@@ -22,6 +25,28 @@ export const AppShell: React.FC<AppShellProps> = ({
 
   const currentNav = NAV_ITEMS.find((item) => item.id === activeItem) || NAV_ITEMS[0];
 
+  const renderMainContent = () => {
+    switch (activeItem) {
+      case 'overview':
+        return <OverviewPage />;
+      case 'meter-intelligence':
+        return <MeterIntelligencePage />;
+      case 'fl-lab':
+        return <FederatedLearningView />;
+      case 'experiments':
+        return <ExperimentsView />;
+      case 'drift-health':
+        return <DriftHealthView />;
+      default:
+        return (
+          <SectionPlaceholder
+            item={currentNav}
+            onBackToOverview={() => onSelectItem('overview')}
+          />
+        );
+    }
+  };
+
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#050B14] text-slate-100 font-sans antialiased">
       {/* Enterprise Collapsible Left Sidebar */}
@@ -40,17 +65,7 @@ export const AppShell: React.FC<AppShellProps> = ({
 
         {/* Dynamic Main Content Region */}
         <main className="flex-1 overflow-hidden relative flex flex-col">
-          {activeItem === 'overview' ? (
-  <OverviewPage />
-) : activeItem === 'meter-intelligence' ? (
-  <MeterIntelligencePage />
-) : (
-  <SectionPlaceholder
-    item={currentNav}
-    onBackToOverview={() => onSelectItem('overview')}
-  />
-
-          )}
+          {renderMainContent()}
         </main>
       </div>
     </div>
