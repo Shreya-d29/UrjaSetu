@@ -9,6 +9,12 @@ import {
   Info,
 } from 'lucide-react';
 import { StatusIndicator } from '../common/StatusIndicator';
+import { 
+  formatEpsilon, 
+  TRAINING_STATUS, 
+  PRIVACY_BUDGET,
+  REGIONAL_CLIENTS 
+} from '../../data/projectFacts';
 
 interface HeaderProps {
   onSearchFocus?: () => void;
@@ -22,7 +28,7 @@ export const Header: React.FC<HeaderProps> = () => {
     {
       id: 1,
       type: 'info',
-      title: 'FL Aggregation Round #48 Complete',
+      title: `FL Aggregation Round #${TRAINING_STATUS.roundsCompleted} Complete`,
       desc: 'Northern & Western regional model weights federated with DP guarantee.',
       time: '4m ago',
     },
@@ -37,7 +43,7 @@ export const Header: React.FC<HeaderProps> = () => {
       id: 3,
       type: 'success',
       title: 'DP Privacy Budget Verification',
-      desc: 'Cumulative epsilon expenditure on schedule (ε = 1.28 / target ε ≤ 4.0).',
+      desc: `Cumulative epsilon expenditure on schedule (${formatEpsilon()} / target ε ≤ ${PRIVACY_BUDGET.epsilon.toFixed(1)}).`,
       time: '1h ago',
     },
   ];
@@ -81,8 +87,8 @@ export const Header: React.FC<HeaderProps> = () => {
         <div className="hidden md:flex items-center gap-3 px-3 py-1 rounded-lg bg-[#071322] border border-[#142842]">
           <StatusIndicator
             status="optimal"
-            label="5 REGIONAL GRIDS ONLINE"
-            sublabel="ε=1.28 DP"
+            label={`${REGIONAL_CLIENTS.count} REGIONAL GRIDS ONLINE`}
+            sublabel={`${formatEpsilon().replace(' ', '')} DP`}
             size="sm"
           />
         </div>

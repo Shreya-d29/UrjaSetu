@@ -3,6 +3,7 @@ import type { GridRegionCode } from '../../types/grid';
 import { GRID_REGIONS_CONFIG } from '../../constants/gridData';
 import { StatusIndicator } from '../common/StatusIndicator';
 import { formatEnergy, formatPower, formatNumber, formatEpsilon } from '../../utils/formatIndian';
+import { PRIVACY_BUDGET } from '../../data/projectFacts';
 
 export interface SelectedStateData {
   name: string;
@@ -37,7 +38,7 @@ export const StateDetailCard = ({
         anomalies: 3200,
         consumption: 145000000, // kWh
         avgLoad: 18500, // MW
-        dpEpsilon: 1.25,
+        dpEpsilon: PRIVACY_BUDGET.epsilon * 0.98, // Slightly lower than global
         lastSync: new Date(Date.now() - 3600000),
       };
     }
@@ -47,7 +48,7 @@ export const StateDetailCard = ({
         anomalies: 1800,
         consumption: 52000000,
         avgLoad: 6800,
-        dpEpsilon: 1.34,
+        dpEpsilon: PRIVACY_BUDGET.epsilon * 1.05, // Slightly higher than global
         lastSync: new Date(Date.now() - 7200000),
       };
     }
@@ -57,7 +58,7 @@ export const StateDetailCard = ({
         anomalies: 2100,
         consumption: 195000000,
         avgLoad: 24500,
-        dpEpsilon: 1.22,
+        dpEpsilon: PRIVACY_BUDGET.epsilon * 0.96,
         lastSync: new Date(Date.now() - 1800000),
       };
     }
@@ -67,7 +68,7 @@ export const StateDetailCard = ({
         anomalies: 1450,
         consumption: 98000000,
         avgLoad: 12200,
-        dpEpsilon: 1.28,
+        dpEpsilon: PRIVACY_BUDGET.epsilon,
         lastSync: new Date(Date.now() - 2400000),
       };
     }
@@ -78,7 +79,7 @@ export const StateDetailCard = ({
       anomalies: Math.floor(Math.random() * 2000) + 500,
       consumption: Math.floor(Math.random() * 100000000) + 20000000,
       avgLoad: Math.floor(Math.random() * 15000) + 3000,
-      dpEpsilon: 1.15 + Math.random() * 0.2,
+      dpEpsilon: PRIVACY_BUDGET.epsilon * (0.95 + Math.random() * 0.2),
       lastSync: new Date(Date.now() - Math.random() * 7200000),
     };
   };

@@ -9,6 +9,7 @@ import {
   Sliders,
 } from 'lucide-react';
 import type { NavItem } from '../types';
+import { formatEpsilon, formatRoundStatus } from '../data/projectFacts';
 
 // Simplified primary navigation — focused on core features
 export const NAV_ITEMS: NavItem[] = [
@@ -37,7 +38,7 @@ export const NAV_ITEMS: NavItem[] = [
     shortLabel: 'FL Engine',
     section: 'INTELLIGENCE',
     icon: Share2,
-    badge: 'Round 48',
+    badge: formatRoundStatus(),
     description: 'Participating clients, training rounds, and aggregation status',
   },
   {
@@ -56,7 +57,7 @@ export const NAV_ITEMS: NavItem[] = [
     shortLabel: 'Trust',
     section: 'MONITORING',
     icon: ShieldCheck,
-    badge: 'ε=1.28',
+    badge: formatEpsilon().replace(' ', ''),
     description: 'Privacy configuration, drift detection, and model health monitoring',
   },
   {

@@ -8,6 +8,7 @@ import {
 import type { NavItemId, NavSection } from '../../types';
 import { NAV_ITEMS } from '../../constants/navigation';
 import { UrjaSetuLogo } from '../common/UrjaSetuLogo';
+import { formatEpsilon, TOTAL_DISCOM_NODES } from '../../data/projectFacts';
 
 interface SidebarProps {
   activeItem: NavItemId;
@@ -177,11 +178,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </span>
               </div>
               <span className="text-[10px] font-mono text-[#B8FF65] font-semibold">
-                ε = 1.28
+                {formatEpsilon()}
               </span>
             </div>
             <p className="text-[10px] text-slate-400 leading-tight font-sans">
-              Decentralized parameters active across 18 simulated DISCOM nodes.
+              Decentralized parameters active across {TOTAL_DISCOM_NODES} simulated DISCOM nodes.
             </p>
             <div className="mt-2 pt-1.5 border-t border-[#102238] flex items-center justify-between text-[9px] font-mono text-slate-500">
               <span>ZERO RAW EXPOSURE</span>
@@ -191,11 +192,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         ) : (
           <div
             className="flex flex-col items-center justify-center p-2 rounded-lg border border-[#142842] bg-[#081525] text-center"
-            title="UrjaSetu Privacy: Differential Privacy Active (ε = 1.28)"
+            title={`UrjaSetu Privacy: Differential Privacy Active (${formatEpsilon()})`}
           >
             <ShieldCheck className="w-4 h-4 text-[#38BDF8]" />
             <span className="text-[9px] font-mono text-[#B8FF65] mt-1 font-semibold">
-              ε1.28
+              {formatEpsilon().replace(' ', '')}
             </span>
           </div>
         )}

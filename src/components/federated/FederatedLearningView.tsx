@@ -7,11 +7,15 @@ import {
 } from 'lucide-react';
 import experimentDataRaw from '../../data/federatedExperimentResults.json';
 import type { FederatedExperimentPayload } from '../../types/fl';
+import { 
+  PRIVACY_BUDGET,
+  REGIONAL_CLIENTS 
+} from '../../data/projectFacts';
 
 const experimentData = experimentDataRaw as unknown as FederatedExperimentPayload;
 
 export const FederatedLearningView: React.FC = () => {
-  const { metadata, privacy_budget, regional_clients, benchmarks } = experimentData;
+  const { metadata, regional_clients, benchmarks } = experimentData;
   const fedavgHistory = benchmarks.fedavg.rounds_history;
 
   // Selected round for detailed inspection (default to final round)
@@ -50,7 +54,7 @@ export const FederatedLearningView: React.FC = () => {
             </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-400 mt-1 font-sans">
-            Privacy-preserving parameter aggregation (DP-FedAvg & FedProx) across 5 Indian Regional Grid Enclaves.
+            Privacy-preserving parameter aggregation (DP-FedAvg & FedProx) across {REGIONAL_CLIENTS.count} Indian Regional Grid Enclaves.
           </p>
         </div>
 
@@ -91,10 +95,10 @@ export const FederatedLearningView: React.FC = () => {
             <Lock className="w-4 h-4 text-[#38BDF8]" />
           </div>
           <div className="text-xl sm:text-2xl font-bold font-mono text-white">
-            ε ≤ {privacy_budget.achieved_epsilon.toFixed(1)}
+            ε ≤ {PRIVACY_BUDGET.epsilon.toFixed(1)}
           </div>
           <div className="text-[10px] font-mono text-slate-400 mt-1">
-            Clip C={privacy_budget.clipping_norm_C.toFixed(1)} | σ={privacy_budget.noise_multiplier_sigma.toFixed(2)}
+            Clip C={PRIVACY_BUDGET.clipNorm.toFixed(1)} | σ={PRIVACY_BUDGET.sigma.toFixed(2)}
           </div>
         </div>
 

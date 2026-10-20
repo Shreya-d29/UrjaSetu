@@ -14,14 +14,23 @@ import {
 import { IndiaGrid3D } from '../visualization/IndiaGrid3D';
 import { StatusIndicator } from '../common/StatusIndicator';
 import type { GridRegionSummary } from '../../types';
+import { 
+  formatEpsilon, 
+  formatRoundStatus,
+  TOTAL_DISCOM_NODES,
+  TRAINING_STATUS,
+  REGIONAL_CLIENTS,
+  DISCOM_DISTRIBUTION,
+  PRIVACY_BUDGET 
+} from '../../data/projectFacts';
 
-// Simulated benchmark grid regions to establish proportions without claiming live DISCOM connection
+// Simulated benchmark grid regions using actual DISCOM distribution
 const SIMULATED_REGIONS: GridRegionSummary[] = [
-  { code: 'NR', name: 'Northern Grid', discomCount: 5, simulatedStatus: 'optimal', dpEpsilon: 1.15, lastRound: 48 },
-  { code: 'WR', name: 'Western Grid', discomCount: 4, simulatedStatus: 'optimal', dpEpsilon: 1.22, lastRound: 48 },
-  { code: 'SR', name: 'Southern Grid', discomCount: 4, simulatedStatus: 'syncing', dpEpsilon: 1.28, lastRound: 47 },
-  { code: 'ER', name: 'Eastern Grid', discomCount: 3, simulatedStatus: 'optimal', dpEpsilon: 1.10, lastRound: 48 },
-  { code: 'NER', name: 'North-Eastern Grid', discomCount: 2, simulatedStatus: 'optimal', dpEpsilon: 0.95, lastRound: 48 },
+  { code: 'NR', name: 'Northern Grid', discomCount: DISCOM_DISTRIBUTION.NR, simulatedStatus: 'optimal', dpEpsilon: 1.15, lastRound: TRAINING_STATUS.roundsCompleted },
+  { code: 'WR', name: 'Western Grid', discomCount: DISCOM_DISTRIBUTION.WR, simulatedStatus: 'optimal', dpEpsilon: 1.22, lastRound: TRAINING_STATUS.roundsCompleted },
+  { code: 'SR', name: 'Southern Grid', discomCount: DISCOM_DISTRIBUTION.SR, simulatedStatus: 'syncing', dpEpsilon: 1.28, lastRound: TRAINING_STATUS.roundsCompleted - 1 },
+  { code: 'ER', name: 'Eastern Grid', discomCount: DISCOM_DISTRIBUTION.ER, simulatedStatus: 'optimal', dpEpsilon: 1.10, lastRound: TRAINING_STATUS.roundsCompleted },
+  { code: 'NER', name: 'North-Eastern Grid', discomCount: DISCOM_DISTRIBUTION.NER, simulatedStatus: 'optimal', dpEpsilon: 0.95, lastRound: TRAINING_STATUS.roundsCompleted },
 ];
 
 export const OverviewPage: React.FC = () => {
@@ -48,7 +57,7 @@ export const OverviewPage: React.FC = () => {
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#071324] border border-[#142842] text-slate-300">
             <span className="w-2 h-2 rounded-full bg-[#38BDF8] animate-pulse" />
             <span className="text-[11px] text-slate-400">ROUND:</span>
-            <span className="text-[#B8FF65] font-semibold">#48 / 100</span>
+            <span className="text-[#B8FF65] font-semibold">{formatRoundStatus()}</span>
           </div>
 
           <button
@@ -70,7 +79,7 @@ export const OverviewPage: React.FC = () => {
             <Users className="w-4 h-4 text-[#38BDF8]" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-xl sm:text-2xl font-bold font-mono text-white">18</span>
+            <span className="text-xl sm:text-2xl font-bold font-mono text-white">{TOTAL_DISCOM_NODES}</span>
             <span className="text-[11px] text-slate-400 font-sans">Simulated DISCOMs</span>
           </div>
           <div className="text-[10px] font-mono text-[#B8FF65] mt-1 flex items-center gap-1">
@@ -85,8 +94,8 @@ export const OverviewPage: React.FC = () => {
             <Layers className="w-4 h-4 text-[#B8FF65]" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-xl sm:text-2xl font-bold font-mono text-white">#48</span>
-            <span className="text-[11px] text-slate-400 font-sans">of 100 Target</span>
+            <span className="text-xl sm:text-2xl font-bold font-mono text-white">#{TRAINING_STATUS.roundsCompleted}</span>
+            <span className="text-[11px] text-slate-400 font-sans">of {TRAINING_STATUS.roundsPlanned} Target</span>
           </div>
           <div className="text-[10px] font-mono text-slate-400 mt-1">
             DP-FedAvg Convergence
@@ -100,11 +109,11 @@ export const OverviewPage: React.FC = () => {
             <ShieldCheck className="w-4 h-4 text-[#38BDF8]" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-xl sm:text-2xl font-bold font-mono text-white">5 / 5</span>
+            <span className="text-xl sm:text-2xl font-bold font-mono text-white">{REGIONAL_CLIENTS.count} / {REGIONAL_CLIENTS.count}</span>
             <span className="text-[11px] text-slate-400 font-sans">Grids Online</span>
           </div>
           <div className="text-[10px] font-mono text-[#38BDF8] mt-1">
-            ε = 1.28 DP Budget Spent
+            {formatEpsilon()} DP Budget Spent
           </div>
         </div>
 
@@ -177,8 +186,8 @@ export const OverviewPage: React.FC = () => {
                   DP Privacy Budget Spent
                 </div>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-lg font-mono font-bold text-[#B8FF65]">ε = 1.28</span>
-                  <span className="text-[10px] font-mono text-slate-400">δ = 10⁻⁵</span>
+                  <span className="text-lg font-mono font-bold text-[#B8FF65]">{formatEpsilon()}</span>
+                  <span className="text-[10px] font-mono text-slate-400">δ = {PRIVACY_BUDGET.delta.toExponential(0)}</span>
                 </div>
                 <div className="text-[9px] text-slate-500 font-mono mt-0.5">
                   Rényi Differential Privacy
