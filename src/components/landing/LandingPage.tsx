@@ -139,7 +139,7 @@ const EnterGridButton: React.FC<{
           className="font-mono text-[11px] tracking-[0.22em] uppercase transition-colors duration-300"
           style={{ color: hovered || isEntering ? '#38BDF8' : '#64748B' }}
         >
-          {isEntering ? 'ENTERING...' : 'Enter the Grid'}
+          {isEntering ? 'ENTERING...' : "Explore India's Grid"}
         </span>
         {/* Thin underline energy trail */}
         <span
@@ -324,12 +324,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onExplore }) => {
               {/* Headline */}
               <div className="space-y-3">
                 <h1 className="font-display text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.08]">
-                  Intelligence for a Smarter Grid.
+                  India's Power Grid. Smarter Together.
                 </h1>
                 <p className="font-sans text-sm sm:text-base text-slate-400 leading-relaxed max-w-xl font-normal">
-                  UrjaSetu explores how federated learning can help electricity networks identify
-                  suspicious consumption, detect smart-meter anomalies, and improve grid
-                  intelligence — while keeping regional data local.
+                  Explore grid intelligence, detect anomalies, and understand how federated learning helps protect electricity infrastructure — while keeping regional data local.
                 </p>
               </div>
 
