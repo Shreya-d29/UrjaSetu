@@ -352,7 +352,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onExplore }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="font-mono text-xs font-bold text-[#38BDF8]">ε = 1.28</div>
+                  <div className="font-mono text-xs font-bold text-[#38BDF8]">ε ≈ 10</div>
                   <div className="text-[11px] text-slate-500 font-sans mt-0.5">
                     DP Privacy Budget
                   </div>
