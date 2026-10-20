@@ -8,6 +8,7 @@ import { DriftHealthView } from '../drift/DriftHealthView';
 import { SectionPlaceholder } from '../placeholders/SectionPlaceholder';
 import { NAV_ITEMS } from '../../constants/navigation';
 import type { NavItemId } from '../../types';
+import { MeterIntelligencePage } from '../meters/MeterIntelligencePage';
 
 interface AppShellProps {
   activeItem: NavItemId;
@@ -30,12 +31,7 @@ export const AppShell: React.FC<AppShellProps> = ({
       case 'india-grid-explorer':
         return <IndiaGridExplorer />;
       case 'anomaly-intelligence':
-        return (
-          <SectionPlaceholder
-            item={currentNav}
-            onBackToOverview={() => onSelectItem('india-grid-explorer')}
-          />
-        );
+        return <MeterIntelligencePage />;
       case 'federated-learning':
         return <FederatedLearningView />;
       case 'experiments':
@@ -49,18 +45,19 @@ export const AppShell: React.FC<AppShellProps> = ({
             onBackToOverview={() => onSelectItem('india-grid-explorer')}
           />
         );
-        
+
       // Legacy routes (for backward compatibility)
       case 'overview':
       case 'grid-regions':
-      case 'meter-intelligence':
         return <IndiaGridExplorer />;
+      case 'meter-intelligence':
+        return <MeterIntelligencePage />;
       case 'fl-lab':
         return <FederatedLearningView />;
       case 'drift-health':
       case 'privacy-security':
         return <DriftHealthView />;
-        
+
       default:
         return (
           <SectionPlaceholder
