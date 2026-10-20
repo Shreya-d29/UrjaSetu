@@ -6,6 +6,7 @@ import { FederatedLearningView } from '../federated/FederatedLearningView';
 import { ExperimentsView } from '../experiments/ExperimentsView';
 import { DriftHealthView } from '../drift/DriftHealthView';
 import { SectionPlaceholder } from '../placeholders/SectionPlaceholder';
+import { InvestigationsPage, DataSourcesPage, SettingsPage } from '../placeholders/ExtraPages';
 import { NAV_ITEMS } from '../../constants/navigation';
 import type { NavItemId } from '../../types';
 import { MeterIntelligencePage } from '../meters/MeterIntelligencePage';
@@ -39,12 +40,11 @@ export const AppShell: React.FC<AppShellProps> = ({
       case 'trust-model-health':
         return <DriftHealthView />;
       case 'investigations':
-        return (
-          <SectionPlaceholder
-            item={currentNav}
-            onBackToOverview={() => onSelectItem('india-grid-explorer')}
-          />
-        );
+        return <InvestigationsPage />;
+      case 'data-sources':
+        return <DataSourcesPage />;
+      case 'settings':
+        return <SettingsPage />;
 
       // Legacy routes (for backward compatibility)
       case 'overview':
