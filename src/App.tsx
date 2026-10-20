@@ -1,37 +1,45 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { AppShell } from './components/layout/AppShell';
 import { LandingPage } from './components/landing/LandingPage';
-import { NAV_ITEMS } from './constants/navigation';
+import { NAV_ITEMS, ROUTE_ALIASES } from './constants/navigation';
 import type { NavItemId } from './types';
 
 /**
  * App — top-level router and transition orchestrator with browser hash history support.
  *
  * Supports:
- *  - Direct dashboard deep-linking (e.g. /#/overview, /#/grid-regions) and page refresh preservation
+ *  - Direct dashboard deep-linking (e.g. /#/india-grid-explorer) and page refresh preservation
  *  - Native browser Back and Forward navigation via hashchange events
  *  - High-performance cinematic transition from Landing to Dashboard using an overlay veil
+ *  - Route aliases for backward compatibility
  */
 
 function parseRoute(): { view: 'landing' | 'app'; activeItem: NavItemId } {
   if (typeof window === 'undefined') {
-    return { view: 'landing', activeItem: 'overview' };
+    return { view: 'landing', activeItem: 'india-grid-explorer' };
   }
   const rawHash = window.location.hash.replace(/^#\/?/, '').trim();
   if (!rawHash || rawHash === 'landing') {
-    return { view: 'landing', activeItem: 'overview' };
+    return { view: 'landing', activeItem: 'india-grid-explorer' };
   }
 
+  // Check if it's a valid nav ID
   const validNavIds = NAV_ITEMS.map((item) => item.id);
   if (validNavIds.includes(rawHash as NavItemId)) {
     return { view: 'app', activeItem: rawHash as NavItemId };
   }
 
-  if (rawHash === 'dashboard') {
-    return { view: 'app', activeItem: 'overview' };
+  // Check route aliases for backward compatibility
+  if (ROUTE_ALIASES[rawHash]) {
+    return { view: 'app', activeItem: ROUTE_ALIASES[rawHash] as NavItemId };
   }
 
-  return { view: 'landing', activeItem: 'overview' };
+  // Legacy 'dashboard' route → map to explorer
+  if (rawHash === 'dashboard') {
+    return { view: 'app', activeItem: 'india-grid-explorer' };
+  }
+
+  return { view: 'landing', activeItem: 'india-grid-explorer' };
 }
 
 export function App() {
@@ -63,8 +71,8 @@ export function App() {
 
     // 2. Switch view after one rAF so the veil paint lands before the DOM swap
     requestAnimationFrame(() => {
-      setRouteState({ view: 'app', activeItem: 'overview' });
-      window.location.hash = '#/overview';
+      setRouteState({ view: 'app', activeItem: 'india-grid-explorer' });
+      window.location.hash = '#/india-grid-explorer';
 
       // 3. Lift the veil once the dashboard has mounted (two frames + small buffer)
       requestAnimationFrame(() => {

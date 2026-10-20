@@ -25,9 +25,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onReturnToLanding,
 }) => {
   const sections: NavSection[] = [
-    'OVERVIEW',
-    'FEDERATED INTELLIGENCE',
-    'TRUST & MONITORING',
+    'CORE',
+    'INTELLIGENCE',
+    'MONITORING',
     'SYSTEM',
   ];
 

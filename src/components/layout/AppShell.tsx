@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
-import { OverviewPage } from '../overview/OverviewPage';
+import { IndiaGridExplorer } from '../explorer/IndiaGridExplorer';
 import { FederatedLearningView } from '../federated/FederatedLearningView';
 import { ExperimentsView } from '../experiments/ExperimentsView';
 import { DriftHealthView } from '../drift/DriftHealthView';
 import { SectionPlaceholder } from '../placeholders/SectionPlaceholder';
 import { NAV_ITEMS } from '../../constants/navigation';
 import type { NavItemId } from '../../types';
-import { MeterIntelligencePage } from '../meters/MeterIntelligencePage';
 
 interface AppShellProps {
   activeItem: NavItemId;
@@ -27,21 +26,46 @@ export const AppShell: React.FC<AppShellProps> = ({
 
   const renderMainContent = () => {
     switch (activeItem) {
-      case 'overview':
-        return <OverviewPage />;
-      case 'meter-intelligence':
-        return <MeterIntelligencePage />;
-      case 'fl-lab':
+      // New primary routes
+      case 'india-grid-explorer':
+        return <IndiaGridExplorer />;
+      case 'anomaly-intelligence':
+        return (
+          <SectionPlaceholder
+            item={currentNav}
+            onBackToOverview={() => onSelectItem('india-grid-explorer')}
+          />
+        );
+      case 'federated-learning':
         return <FederatedLearningView />;
       case 'experiments':
         return <ExperimentsView />;
-      case 'drift-health':
+      case 'trust-model-health':
         return <DriftHealthView />;
+      case 'investigations':
+        return (
+          <SectionPlaceholder
+            item={currentNav}
+            onBackToOverview={() => onSelectItem('india-grid-explorer')}
+          />
+        );
+        
+      // Legacy routes (for backward compatibility)
+      case 'overview':
+      case 'grid-regions':
+      case 'meter-intelligence':
+        return <IndiaGridExplorer />;
+      case 'fl-lab':
+        return <FederatedLearningView />;
+      case 'drift-health':
+      case 'privacy-security':
+        return <DriftHealthView />;
+        
       default:
         return (
           <SectionPlaceholder
             item={currentNav}
-            onBackToOverview={() => onSelectItem('overview')}
+            onBackToOverview={() => onSelectItem('india-grid-explorer')}
           />
         );
     }

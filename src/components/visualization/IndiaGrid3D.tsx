@@ -1090,7 +1090,7 @@ export const IndiaGrid3D = () => {
       const { stateName, region, status } = hit.object.userData;
       if (stateName && region) {
         setSelectedState({
-          stateName,
+          name: stateName,
           region: region as GridRegionCode,
           status: status || 'optimal',
         });
@@ -1230,10 +1230,8 @@ export const IndiaGrid3D = () => {
 
         {/* Selected State Inspector Flyout */}
         <StateDetailCard
-          stateData={selectedState}
+          state={selectedState}
           onClose={() => setSelectedState(null)}
-          onFilterRegion={(reg) => setRegionFilter((prev) => (prev === reg ? 'ALL' : reg))}
-          currentFilter={regionFilter}
         />
       </div>
 
