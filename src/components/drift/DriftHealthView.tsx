@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import experimentDataRaw from '../../data/federatedExperimentResults.json';
 import type { FederatedExperimentPayload } from '../../types/fl';
+import { formatDriftScore } from '../../data/projectFacts';
 
 const experimentData = experimentDataRaw as unknown as FederatedExperimentPayload;
 
@@ -65,7 +66,7 @@ export const DriftHealthView: React.FC = () => {
             <span className="text-[10px] font-mono uppercase tracking-wider">Max Pairwise Drift</span>
             <Activity className="w-4 h-4 text-amber-400" />
           </div>
-          <div className="text-xl sm:text-2xl font-bold font-mono text-amber-400">1.84 d_W</div>
+          <div className="text-xl sm:text-2xl font-bold font-mono text-amber-400">{formatDriftScore()} d_W</div>
           <div className="text-[10px] font-mono text-slate-400 mt-1">WR (Industrial) vs NER (Rural)</div>
         </div>
 
@@ -80,7 +81,7 @@ export const DriftHealthView: React.FC = () => {
       </div>
 
       {/* 3. Regional Client Distribution Profiles */}
-      <div className="rounded-xl border border-[#142842] bg-[#071324] overflow-hidden">
+      <div className="rounded-xl border border-[#142842] bg-[#071324]">
         <div className="p-4 border-b border-[#14243A]">
           <h3 className="font-display font-semibold text-white text-base">
             Regional Grid Consumer Distribution Characteristics
@@ -148,7 +149,7 @@ export const DriftHealthView: React.FC = () => {
             Pairwise Regional Divergence Matrix (d_W)
           </h4>
           <p className="text-xs text-slate-400 font-sans mt-0.5">
-            Normalized covariate distance between regional client distributions. Darker values indicate higher distribution alignment.
+            Pairwise covariate divergence (d_W). Larger values mean the regions differ more.
           </p>
         </div>
 

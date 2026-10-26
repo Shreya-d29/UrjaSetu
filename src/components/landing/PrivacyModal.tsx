@@ -79,7 +79,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({
               </h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed font-sans">
-              Model updates are clipped by L2 norm (<span className="font-mono text-white">C = 1.0</span>) with calibrated Gaussian noise injection (<span className="font-mono text-white">σ = 0.85</span>), providing a formal privacy budget of <span className="font-mono text-[#B8FF65]">ε = 1.28, δ = 10⁻⁵</span>.
+              Model updates are clipped by L2 norm (<span className="font-mono text-white">C = 1.0</span>) with calibrated Gaussian noise injection (<span className="font-mono text-white">σ = 0.5</span>), with an estimated privacy budget of <span className="font-mono text-[#B8FF65]">ε ≈ 10 (estimated), δ = 10⁻⁵</span>.
             </p>
             <div className="mt-3 text-[10px] font-mono text-slate-500">
               MATHEMATICALLY BOUNDED

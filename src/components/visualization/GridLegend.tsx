@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Activity, ShieldCheck, Zap, ChevronDown, ChevronUp } from 'lucide-react';
+import { formatEpsilon } from '../../data/projectFacts';
 
 export const GridLegend = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -52,7 +53,7 @@ export const GridLegend = () => {
             </div>
             <div className="flex items-center gap-1 text-[#B8FF65]">
               <ShieldCheck className="w-2.5 h-2.5" />
-              <span>ε=1.28 DP</span>
+              <span>{formatEpsilon().replace(' ', '')} DP</span>
             </div>
           </div>
         </div>

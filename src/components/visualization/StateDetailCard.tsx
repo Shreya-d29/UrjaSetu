@@ -1,106 +1,254 @@
-import { X, ShieldAlert, Filter } from 'lucide-react';
+import { X, ShieldAlert, TrendingUp, Users, Activity, Database } from 'lucide-react';
 import type { GridRegionCode } from '../../types/grid';
 import { GRID_REGIONS_CONFIG } from '../../constants/gridData';
 import { StatusIndicator } from '../common/StatusIndicator';
+import { formatNumber } from '../../utils/formatIndian';
+import { TRAINING_STATUS, formatEpsilon } from '../../data/projectFacts';
+import experimentDataRaw from '../../data/federatedExperimentResults.json';
+import type { FederatedExperimentPayload } from '../../types/fl';
+
+const experimentData = experimentDataRaw as unknown as FederatedExperimentPayload;
 
 export interface SelectedStateData {
-  stateName: string;
+  name: string;
   region: GridRegionCode;
   status: 'optimal' | 'warning' | 'alert' | 'syncing';
 }
 
 interface StateDetailCardProps {
-  stateData: SelectedStateData | null;
+  state: SelectedStateData | null;
   onClose: () => void;
-  onFilterRegion: (region: GridRegionCode) => void;
-  currentFilter: GridRegionCode | 'ALL';
+  onNavigateToAnalysis?: (stateName: string) => void;
 }
 
 export const StateDetailCard = ({
-  stateData,
+  state,
   onClose,
-  onFilterRegion,
-  currentFilter,
+  onNavigateToAnalysis,
 }: StateDetailCardProps) => {
-  if (!stateData) return null;
+  if (!state) return null;
 
-  const regionConfig = GRID_REGIONS_CONFIG[stateData.region] || {
+  const regionConfig = GRID_REGIONS_CONFIG[state.region] || {
     name: 'National Grid',
-    label: stateData.region,
+    label: state.region,
     color: '#38BDF8',
     center: [82.5, 22.0] as const,
   };
 
-  const isFiltered = currentFilter === stateData.region;
+  // Get real regional data from experiment results
+  const getRegionalData = (region: GridRegionCode) => {
+    const clientData = experimentData.regional_clients[region];
+    const localOnlyData = experimentData.benchmarks.local_only.per_client_breakdown[region];
+    
+    if (!clientData || !localOnlyData) {
+      return null;
+    }
+    
+    return {
+      trainSamples: clientData.train_samples,
+      testSamples: clientData.test_samples_contributed,
+      anomalyRate: clientData.train_anomaly_rate,
+      localOnlyROCauc: localOnlyData.test_roc_auc,
+      localOnlyF1: localOnlyData.test_f1,
+    };
+  };
+
+  const regionalData = getRegionalData(state.region);
 
   return (
-    <div className="absolute bottom-4 left-4 z-20 max-w-[310px] w-full p-3.5 rounded-lg bg-[#07111F]/95 backdrop-blur-md border border-[#1A385E] shadow-2xl text-xs font-sans pointer-events-auto animate-in fade-in slide-in-from-bottom-2 duration-150">
-      <div className="flex items-start justify-between pb-2 border-b border-[#14263D]">
-        <div>
-          <div className="flex items-center gap-1.5">
-            <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-[#0D223A] text-[#B8FF65] border border-[#193B61]">
-              {stateData.region}
+    <div className="h-full flex flex-col overflow-hidden">
+      {/* Header */}
+      <div className="flex-shrink-0 flex items-start justify-between p-4 pb-3 border-b border-[#14263D]">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <span 
+              className="px-2 py-0.5 rounded text-[10px] font-mono font-bold border"
+              style={{
+                backgroundColor: `${regionConfig.color}15`,
+                color: regionConfig.color,
+                borderColor: `${regionConfig.color}40`,
+              }}
+            >
+              {state.region}
             </span>
-            <span className="text-[10px] font-mono text-slate-400">
+            <span className="text-[11px] font-mono text-slate-400">
               {regionConfig.name}
             </span>
           </div>
-          <h3 className="text-sm font-bold text-white mt-1 leading-snug">
-            {stateData.stateName}
-          </h3>
+          <h2 className="text-xl font-bold text-white font-display leading-tight">
+            {state.name}
+          </h2>
+          <div className="mt-2">
+            <StatusIndicator 
+              status={state.status} 
+              label={state.status === 'optimal' ? 'Operational' : 
+                     state.status === 'syncing' ? 'Synchronizing' : 
+                     state.status === 'warning' ? 'Warning' : 'Alert'} 
+              size="sm" 
+            />
+          </div>
         </div>
+
         <button
           onClick={onClose}
-          className="p-1 rounded text-slate-400 hover:text-white hover:bg-[#0E2036] transition-colors"
+          className="flex-shrink-0 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#0E2036] transition-colors"
           title="Close state inspector"
           aria-label="Close state inspector"
         >
-          <X className="w-4 h-4" />
+          <X className="w-5 h-5" />
         </button>
       </div>
 
-      <div className="py-2.5 space-y-1.5 border-b border-[#14263D] font-mono text-[10px]">
-        <div className="flex items-center justify-between">
-          <span className="text-slate-400">Grid Status:</span>
-          <StatusIndicator status={stateData.status} label={stateData.status.toUpperCase()} size="sm" />
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-slate-400">Synchronous Grid:</span>
-          <span className="text-[#38BDF8] font-medium">{regionConfig.name}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-slate-400">Telemetry Stream:</span>
-          <span className="text-slate-200">
-            {stateData.status === 'alert' ? 'SIMULATED OUTAGE' : 'STABLE (SIMULATED)'}
-          </span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-slate-400">DP Privacy Budget:</span>
-          <span className="text-[#B8FF65]">ε ≤ 1.30 (δ=10⁻⁵)</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-slate-400">Security Model:</span>
-          <span className="text-slate-200">Federated Consensus</span>
+      {/* Content — scrollable */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {/* Grid Metrics */}
+        <section>
+          <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            <Activity className="w-3.5 h-3.5 text-[#38BDF8]" />
+            Regional Client Data
+          </h3>
+
+          {regionalData ? (
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Train Samples</div>
+                <div className="text-lg font-bold font-mono text-white">
+                  {formatNumber(regionalData.trainSamples)}
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Local training data</div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Test Samples</div>
+                <div className="text-lg font-bold font-mono text-[#38BDF8]">
+                  {formatNumber(regionalData.testSamples)}
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Held-out test data</div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Anomaly Rate</div>
+                <div className="text-lg font-bold font-mono text-[#F59E0B]">
+                  {(regionalData.anomalyRate * 100).toFixed(1)}%
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Training set prevalence</div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Local ROC-AUC</div>
+                <div className="text-lg font-bold font-mono text-[#B8FF65]">
+                  {(regionalData.localOnlyROCauc * 100).toFixed(1)}%
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Local-only model</div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A] col-span-2">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Local F1 Score</div>
+                <div className="text-lg font-bold font-mono text-[#818CF8]">
+                  {(regionalData.localOnlyF1 * 100).toFixed(1)}%
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Isolated client performance</div>
+              </div>
+            </div>
+          ) : (
+            <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A] text-sm text-slate-400">
+              Regional data not available
+            </div>
+          )}
+        </section>
+
+        {/* Federated Learning Status */}
+        <section>
+          <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            <Users className="w-3.5 h-3.5 text-[#B8FF65]" />
+            FL Participation
+          </h3>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#0A1422] border border-[#14243A]">
+              <span className="text-xs text-slate-400">Privacy Budget</span>
+              <span className="font-mono text-sm font-semibold text-[#B8FF65]">
+                {formatEpsilon()}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#0A1422] border border-[#14243A]">
+              <span className="text-xs text-slate-400">Rounds</span>
+              <span className="font-mono text-xs text-slate-300">
+                {TRAINING_STATUS.roundsCompleted}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#0A1422] border border-[#14243A]">
+              <span className="text-xs text-slate-400">Model</span>
+              <span className="font-mono text-xs text-slate-300">
+                DP-FedAvg
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#0A1422] border border-[#14243A]">
+              <span className="text-xs text-slate-400">Aggregation Mode</span>
+              <span className="font-mono text-xs text-[#38BDF8]">
+                DP-FedAvg
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* Data Sources */}
+        <section>
+          <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            <Database className="w-3.5 h-3.5 text-[#38BDF8]" />
+            Data Sources
+          </h3>
+
+          <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A] space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Source</span>
+              <span className="font-mono text-[#B8FF65]">Simulated regional client data</span>
+            </div>
+
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Data Retention</span>
+              <span className="font-mono text-slate-200">Local Only</span>
+            </div>
+
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Privacy</span>
+              <span className="font-mono text-slate-200">Federated (No raw data shared)</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Important Notice */}
+        <div className="p-3 rounded-lg bg-[#38BDF8]/5 border border-[#38BDF8]/20">
+          <div className="flex items-start gap-2">
+            <ShieldAlert className="w-4 h-4 text-[#38BDF8] flex-shrink-0 mt-0.5" />
+            <div>
+              <div className="text-xs font-semibold text-slate-200 mb-1">
+                Simulated Benchmark Data
+              </div>
+              <p className="text-[10px] text-slate-400 leading-relaxed">
+                This is demonstration data for research and evaluation purposes. All values are synthetically generated and do not represent actual DISCOM measurements or official grid conditions.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="pt-2.5 flex items-center justify-between gap-2">
+      {/* Footer Actions */}
+      <div className="flex-shrink-0 p-4 border-t border-[#14263D] bg-[#0A1422]/50">
         <button
-          onClick={() => onFilterRegion(stateData.region)}
-          className={`flex items-center gap-1 px-2 py-1 rounded text-[10px] font-mono transition-colors ${
-            isFiltered
-              ? 'bg-[#B8FF65]/20 text-[#B8FF65] border border-[#B8FF65]/40'
-              : 'bg-[#0E2036] text-slate-300 hover:text-white border border-[#1B3554]'
-          }`}
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#38BDF8]/15 hover:bg-[#38BDF8]/25 border border-[#38BDF8]/40 text-sm font-medium text-[#38BDF8] transition-all"
+          onClick={() => {
+            if (onNavigateToAnalysis) {
+              onNavigateToAnalysis(state.name);
+            }
+          }}
         >
-          <Filter className="w-3 h-3" />
-          <span>{isFiltered ? 'FILTER ACTIVE' : `FOCUS ${stateData.region} GRID`}</span>
+          <TrendingUp className="w-4 h-4" />
+          <span>View Detailed Analytics</span>
         </button>
-
-        <div className="flex items-center gap-1 text-[9px] font-mono text-slate-500">
-          <ShieldAlert className="w-3 h-3 text-[#B8FF65]" />
-          <span>SIMULATED</span>
-        </div>
       </div>
     </div>
   );

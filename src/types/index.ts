@@ -1,22 +1,28 @@
 import type { LucideIcon } from 'lucide-react';
 
 export type NavItemId =
+  | 'india-grid-explorer'
+  | 'anomaly-intelligence'
+  | 'federated-learning'
+  | 'experiments'
+  | 'trust-model-health'
+  | 'investigations'
+  | 'state-analysis'
+  | 'data-sources'
+  | 'settings'
+  // Legacy routes for backward compatibility
   | 'overview'
   | 'grid-regions'
   | 'meter-intelligence'
   | 'fl-lab'
-  | 'experiments'
   | 'privacy-security'
   | 'drift-health'
-  | 'investigations'
-  | 'reports'
-  | 'data-sources'
-  | 'settings';
+  | 'reports';
 
 export type NavSection =
-  | 'OVERVIEW'
-  | 'FEDERATED INTELLIGENCE'
-  | 'TRUST & MONITORING'
+  | 'CORE'
+  | 'INTELLIGENCE'
+  | 'MONITORING'
   | 'SYSTEM';
 
 export interface NavItem {

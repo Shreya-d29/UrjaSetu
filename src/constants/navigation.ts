@@ -1,101 +1,83 @@
 import {
+  Globe,
   Activity,
-  Network,
-  Gauge,
   Share2,
   FlaskConical,
   ShieldCheck,
-  HeartPulse,
   SearchCheck,
-  FileText,
   Database,
   Sliders,
 } from 'lucide-react';
 import type { NavItem } from '../types';
+import { formatEpsilon, formatRoundStatus } from '../data/projectFacts';
 
+// Simplified primary navigation — focused on core features
 export const NAV_ITEMS: NavItem[] = [
-  // 1. OVERVIEW
+  // Core Experience: India Grid Explorer
   {
-    id: 'overview',
-    label: 'National Overview',
-    shortLabel: 'Overview',
-    section: 'OVERVIEW',
-    icon: Activity,
-    description: 'National Grid command overview and real-time mesh monitoring',
-  },
-  {
-    id: 'grid-regions',
-    label: 'Grid Regions',
-    shortLabel: 'Regions',
-    section: 'OVERVIEW',
-    icon: Network,
-    badge: '5 Grids',
-    description: 'Northern, Western, Southern, Eastern, and North-Eastern regional topologies',
-  },
-  {
-    id: 'meter-intelligence',
-    label: 'Meter Intelligence',
-    shortLabel: 'Meters',
-    section: 'OVERVIEW',
-    icon: Gauge,
-    description: 'Smart meter streaming telemetry & anomaly inference',
+    id: 'india-grid-explorer',
+    label: 'India Grid Explorer',
+    shortLabel: 'Explorer',
+    section: 'CORE',
+    icon: Globe,
+    description: 'Interactive India power grid with state selection and regional intelligence',
   },
 
-  // 2. FEDERATED INTELLIGENCE
+  // Intelligence & Analytics
   {
-    id: 'fl-lab',
+    id: 'anomaly-intelligence',
+    label: 'Anomaly Intelligence',
+    shortLabel: 'Anomalies',
+    section: 'INTELLIGENCE',
+    icon: Activity,
+    description: 'Consumption patterns, severity analysis, and investigation workflow',
+  },
+  {
+    id: 'federated-learning',
     label: 'Federated Learning',
     shortLabel: 'FL Engine',
-    section: 'FEDERATED INTELLIGENCE',
+    section: 'INTELLIGENCE',
     icon: Share2,
-    badge: 'Round 48',
-    description: 'Decentralized parameter aggregation & round coordinator',
+    badge: formatRoundStatus(),
+    description: 'Participating clients, training rounds, and aggregation status',
   },
   {
     id: 'experiments',
     label: 'Experiments & Evaluation',
     shortLabel: 'Experiments',
-    section: 'FEDERATED INTELLIGENCE',
+    section: 'INTELLIGENCE',
     icon: FlaskConical,
-    description: 'Model benchmark runs, loss curves & validation sweeps',
+    description: 'Model configurations, metrics, and performance comparisons',
+  },
+  {
+    id: 'state-analysis',
+    label: 'State Deep-Dive',
+    shortLabel: 'State Analysis',
+    section: 'INTELLIGENCE',
+    icon: Activity,
+    description: 'City-level analysis with anomaly scores and regional insights',
   },
 
-  // 3. TRUST & MONITORING
+  // Trust & Monitoring
   {
-    id: 'privacy-security',
-    label: 'Privacy & Security',
-    shortLabel: 'Privacy',
-    section: 'TRUST & MONITORING',
+    id: 'trust-model-health',
+    label: 'Trust & Model Health',
+    shortLabel: 'Trust',
+    section: 'MONITORING',
     icon: ShieldCheck,
-    badge: 'ε=1.28',
-    description: 'Differential privacy budgets & Secure Multi-Party Aggregation',
-  },
-  {
-    id: 'drift-health',
-    label: 'Drift & Model Health',
-    shortLabel: 'Drift',
-    section: 'TRUST & MONITORING',
-    icon: HeartPulse,
-    description: 'Non-IID distribution shifts, concept drift & node health',
+    badge: formatEpsilon().replace(' ', ''),
+    description: 'Privacy configuration, drift detection, and model health monitoring',
   },
   {
     id: 'investigations',
-    label: 'Investigations',
-    shortLabel: 'Forensics',
-    section: 'TRUST & MONITORING',
-    icon: SearchCheck,
-    description: 'Tamper-evident anomaly forensics & DISCOM audit logs',
-  },
-  {
-    id: 'reports',
-    label: 'Reports',
+    label: 'Investigations & Reports',
     shortLabel: 'Reports',
-    section: 'TRUST & MONITORING',
-    icon: FileText,
-    description: 'Automated executive summaries and compliance exports',
+    section: 'MONITORING',
+    icon: SearchCheck,
+    description: 'Detailed cases and exportable findings',
   },
 
-  // 4. SYSTEM
+  // System (Secondary)
   {
     id: 'data-sources',
     label: 'Data Sources',
@@ -110,6 +92,17 @@ export const NAV_ITEMS: NavItem[] = [
     shortLabel: 'Settings',
     section: 'SYSTEM',
     icon: Sliders,
-    description: 'Platform topology, node certificates & display prefs',
+    description: 'Platform topology, node certificates & display preferences',
   },
 ];
+
+// Backward compatibility mapping for existing routes
+export const ROUTE_ALIASES: Record<string, string> = {
+  'overview': 'india-grid-explorer',
+  'grid-regions': 'india-grid-explorer',
+  'meter-intelligence': 'anomaly-intelligence',
+  'fl-lab': 'federated-learning',
+  'privacy-security': 'trust-model-health',
+  'drift-health': 'trust-model-health',
+  'reports': 'investigations',
+};

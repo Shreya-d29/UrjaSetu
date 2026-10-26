@@ -19,7 +19,7 @@ import { GridControls } from './GridControls';
 import { GridLegend } from './GridLegend';
 import { GridTooltip } from './GridTooltip';
 import { NodeDetailCard } from './NodeDetailCard';
-import { StateDetailCard, type SelectedStateData } from './StateDetailCard';
+import type { SelectedStateData } from './StateDetailCard';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { preloadGeoData } from '../../utils/geoCache';
 
@@ -55,7 +55,11 @@ function getEdgeKey(p1: Coordinate2D, p2: Coordinate2D): string {
   return k1 < k2 ? `${k1}|${k2}` : `${k2}|${k1}`;
 }
 
-export const IndiaGrid3D = () => {
+interface IndiaGrid3DProps {
+  onStateSelect?: (state: SelectedStateData | null) => void;
+}
+
+export const IndiaGrid3D = ({ onStateSelect }: IndiaGrid3DProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -68,8 +72,10 @@ export const IndiaGrid3D = () => {
   const [regionFilter, setRegionFilter] = useState<GridRegionCode | 'ALL'>('ALL');
   const [hoveredEntity, setHoveredEntity] = useState<HoveredEntity | null>(null);
   const [selectedNode, setSelectedNode] = useState<GridNode | null>(null);
-  const [selectedState, setSelectedState] = useState<SelectedStateData | null>(null);
   const [cameraPreset, setCameraPreset] = useState<'india' | 'overview'>('india');
+
+  // Use external state if provided, otherwise manage internally for backward compatibility
+  const setSelectedState = onStateSelect || (() => {});
 
   // Track pointer down coordinates to distinguish click vs rotate drag
   const pointerDownPosRef = useRef<{ x: number; y: number } | null>(null);
@@ -1090,7 +1096,7 @@ export const IndiaGrid3D = () => {
       const { stateName, region, status } = hit.object.userData;
       if (stateName && region) {
         setSelectedState({
-          stateName,
+          name: stateName,
           region: region as GridRegionCode,
           status: status || 'optimal',
         });
@@ -1219,22 +1225,14 @@ export const IndiaGrid3D = () => {
           onTogglePreset={handleTogglePreset}
         />
 
-        {/* Compact Legend (hidden when node or state inspector card is open to prevent overlap) */}
-        {!selectedNode && !selectedState && <GridLegend />}
+        {/* Compact Legend (hidden when node inspector card is open to prevent overlap) */}
+        {!selectedNode && <GridLegend />}
 
         {/* Mouse Hover Tooltip */}
         <GridTooltip hovered={hoveredEntity} />
 
         {/* Selected Node Inspector Flyout */}
         <NodeDetailCard node={selectedNode} onClose={() => setSelectedNode(null)} />
-
-        {/* Selected State Inspector Flyout */}
-        <StateDetailCard
-          stateData={selectedState}
-          onClose={() => setSelectedState(null)}
-          onFilterRegion={(reg) => setRegionFilter((prev) => (prev === reg ? 'ALL' : reg))}
-          currentFilter={regionFilter}
-        />
       </div>
 
       {/* Bottom Status / Citation Footer inside canvas frame */}

@@ -58,7 +58,7 @@ export const ExperimentsView: React.FC = () => {
       </div>
 
       {/* 2. Primary 4-Way Architectural Comparison Table */}
-      <div className="rounded-xl border border-[#142842] bg-[#071324] overflow-hidden">
+      <div className="rounded-xl border border-[#142842] bg-[#071324]">
         <div className="p-4 border-b border-[#14243A] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h3 className="font-display font-semibold text-white text-base">
@@ -182,7 +182,7 @@ export const ExperimentsView: React.FC = () => {
       {/* 3. Confusion Matrix and Deep-Dive Inspection */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Confusion Matrix Card */}
-        <div className="p-4 rounded-xl bg-[#071324] border border-[#142842] flex flex-col justify-between">
+        <div className="p-4 rounded-xl bg-[#071324] border border-[#142842] flex flex-col">
           <div>
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-display font-semibold text-white text-sm">
@@ -260,7 +260,7 @@ export const ExperimentsView: React.FC = () => {
         </div>
 
         {/* Local-Only Client Breakdown Card */}
-        <div className="p-4 rounded-xl bg-[#071324] border border-[#142842] flex flex-col justify-between">
+        <div className="p-4 rounded-xl bg-[#071324] border border-[#142842] flex flex-col">
           <div>
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-display font-semibold text-white text-sm">

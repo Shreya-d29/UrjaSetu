@@ -124,7 +124,7 @@ export const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
             <ShieldCheck className="w-5 h-5 text-[#38BDF8] shrink-0 mt-0.5" />
             <div className="text-xs text-slate-300 font-sans leading-relaxed">
               <strong className="text-white font-medium">Privacy Architecture Note: </strong>
-              Federated learning reduces the need to centralize raw data, but does not automatically guarantee privacy. UrjaSetu evaluates additional protections such as differential privacy (<span className="font-mono text-[#B8FF65]">ε = 1.28</span>) and secure aggregation where implemented.
+              Federated learning reduces the need to centralize raw data, but does not automatically guarantee privacy. UrjaSetu evaluates additional protections such as differential privacy (<span className="font-mono text-[#B8FF65]">ε ≈ 10</span>) and secure aggregation where implemented.
             </div>
           </div>
         </div>
