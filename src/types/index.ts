@@ -7,6 +7,7 @@ export type NavItemId =
   | 'experiments'
   | 'trust-model-health'
   | 'investigations'
+  | 'state-analysis'
   | 'data-sources'
   | 'settings'
   // Legacy routes for backward compatibility

@@ -44,7 +44,7 @@ export const TRAINING_STATUS = {
   roundsCompleted: experimentData.metadata.total_rounds,
   
   /** Planned total rounds (for simulation context) */
-  roundsPlanned: 100,
+  roundsPlanned: 20,
   
   /** Local epochs per round */
   localEpochs: experimentData.metadata.local_epochs,

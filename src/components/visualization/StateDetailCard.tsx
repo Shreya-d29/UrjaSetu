@@ -2,8 +2,12 @@ import { X, ShieldAlert, TrendingUp, Users, Activity, Database } from 'lucide-re
 import type { GridRegionCode } from '../../types/grid';
 import { GRID_REGIONS_CONFIG } from '../../constants/gridData';
 import { StatusIndicator } from '../common/StatusIndicator';
-import { formatEnergy, formatPower, formatNumber, formatEpsilon } from '../../utils/formatIndian';
-import { PRIVACY_BUDGET } from '../../data/projectFacts';
+import { formatNumber } from '../../utils/formatIndian';
+import { TRAINING_STATUS, formatEpsilon } from '../../data/projectFacts';
+import experimentDataRaw from '../../data/federatedExperimentResults.json';
+import type { FederatedExperimentPayload } from '../../types/fl';
+
+const experimentData = experimentDataRaw as unknown as FederatedExperimentPayload;
 
 export interface SelectedStateData {
   name: string;
@@ -14,11 +18,13 @@ export interface SelectedStateData {
 interface StateDetailCardProps {
   state: SelectedStateData | null;
   onClose: () => void;
+  onNavigateToAnalysis?: (stateName: string) => void;
 }
 
 export const StateDetailCard = ({
   state,
   onClose,
+  onNavigateToAnalysis,
 }: StateDetailCardProps) => {
   if (!state) return null;
 
@@ -29,62 +35,25 @@ export const StateDetailCard = ({
     center: [82.5, 22.0] as const,
   };
 
-  // Simulated demonstration data for selected states
-  const getSimulatedStateData = (stateName: string) => {
-    // Specific demonstration states
-    if (stateName === 'Uttar Pradesh') {
-      return {
-        meters: 28500000,
-        anomalies: 3200,
-        consumption: 145000000, // kWh
-        avgLoad: 18500, // MW
-        dpEpsilon: PRIVACY_BUDGET.epsilon * 0.98, // Slightly lower than global
-        lastSync: new Date(Date.now() - 3600000),
-      };
+  // Get real regional data from experiment results
+  const getRegionalData = (region: GridRegionCode) => {
+    const clientData = experimentData.regional_clients[region];
+    const localOnlyData = experimentData.benchmarks.local_only.per_client_breakdown[region];
+    
+    if (!clientData || !localOnlyData) {
+      return null;
     }
-    if (stateName === 'Odisha') {
-      return {
-        meters: 9200000,
-        anomalies: 1800,
-        consumption: 52000000,
-        avgLoad: 6800,
-        dpEpsilon: PRIVACY_BUDGET.epsilon * 1.05, // Slightly higher than global
-        lastSync: new Date(Date.now() - 7200000),
-      };
-    }
-    if (stateName === 'Maharashtra') {
-      return {
-        meters: 32000000,
-        anomalies: 2100,
-        consumption: 195000000,
-        avgLoad: 24500,
-        dpEpsilon: PRIVACY_BUDGET.epsilon * 0.96,
-        lastSync: new Date(Date.now() - 1800000),
-      };
-    }
-    if (stateName === 'Karnataka') {
-      return {
-        meters: 18500000,
-        anomalies: 1450,
-        consumption: 98000000,
-        avgLoad: 12200,
-        dpEpsilon: PRIVACY_BUDGET.epsilon,
-        lastSync: new Date(Date.now() - 2400000),
-      };
-    }
-
-    // Default simulated data
+    
     return {
-      meters: Math.floor(Math.random() * 15000000) + 5000000,
-      anomalies: Math.floor(Math.random() * 2000) + 500,
-      consumption: Math.floor(Math.random() * 100000000) + 20000000,
-      avgLoad: Math.floor(Math.random() * 15000) + 3000,
-      dpEpsilon: PRIVACY_BUDGET.epsilon * (0.95 + Math.random() * 0.2),
-      lastSync: new Date(Date.now() - Math.random() * 7200000),
+      trainSamples: clientData.train_samples,
+      testSamples: clientData.test_samples_contributed,
+      anomalyRate: clientData.train_anomaly_rate,
+      localOnlyROCauc: localOnlyData.test_roc_auc,
+      localOnlyF1: localOnlyData.test_f1,
     };
   };
 
-  const data = getSimulatedStateData(state.name);
+  const regionalData = getRegionalData(state.region);
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
@@ -136,42 +105,56 @@ export const StateDetailCard = ({
         <section>
           <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
             <Activity className="w-3.5 h-3.5 text-[#38BDF8]" />
-            Grid Intelligence
+            Regional Client Data
           </h3>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
-              <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Smart Meters</div>
-              <div className="text-lg font-bold font-mono text-white">
-                {formatNumber(data.meters)}
+          {regionalData ? (
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Train Samples</div>
+                <div className="text-lg font-bold font-mono text-white">
+                  {formatNumber(regionalData.trainSamples)}
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Local training data</div>
               </div>
-              <div className="text-[9px] text-slate-500 mt-0.5">Simulated tracked</div>
-            </div>
 
-            <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
-              <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Anomalies</div>
-              <div className="text-lg font-bold font-mono text-[#F59E0B]">
-                {formatNumber(data.anomalies)}
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Test Samples</div>
+                <div className="text-lg font-bold font-mono text-[#38BDF8]">
+                  {formatNumber(regionalData.testSamples)}
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Held-out test data</div>
               </div>
-              <div className="text-[9px] text-slate-500 mt-0.5">Flagged events</div>
-            </div>
 
-            <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
-              <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Consumption</div>
-              <div className="text-lg font-bold font-mono text-[#38BDF8]">
-                {formatEnergy(data.consumption, { decimals: 1 })}
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Anomaly Rate</div>
+                <div className="text-lg font-bold font-mono text-[#F59E0B]">
+                  {(regionalData.anomalyRate * 100).toFixed(1)}%
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Training set prevalence</div>
               </div>
-              <div className="text-[9px] text-slate-500 mt-0.5">Daily average</div>
-            </div>
 
-            <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
-              <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Avg Load</div>
-              <div className="text-lg font-bold font-mono text-[#B8FF65]">
-                {formatPower(data.avgLoad * 1000, { decimals: 1 })}
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A]">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Local ROC-AUC</div>
+                <div className="text-lg font-bold font-mono text-[#B8FF65]">
+                  {(regionalData.localOnlyROCauc * 100).toFixed(1)}%
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Local-only model</div>
               </div>
-              <div className="text-[9px] text-slate-500 mt-0.5">Current demand</div>
+
+              <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A] col-span-2">
+                <div className="text-[10px] font-mono text-slate-400 uppercase mb-1">Local F1 Score</div>
+                <div className="text-lg font-bold font-mono text-[#818CF8]">
+                  {(regionalData.localOnlyF1 * 100).toFixed(1)}%
+                </div>
+                <div className="text-[9px] text-slate-500 mt-0.5">Isolated client performance</div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A] text-sm text-slate-400">
+              Regional data not available
+            </div>
+          )}
         </section>
 
         {/* Federated Learning Status */}
@@ -185,21 +168,21 @@ export const StateDetailCard = ({
             <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#0A1422] border border-[#14243A]">
               <span className="text-xs text-slate-400">Privacy Budget</span>
               <span className="font-mono text-sm font-semibold text-[#B8FF65]">
-                {formatEpsilon(data.dpEpsilon)}
+                {formatEpsilon()}
               </span>
             </div>
 
             <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#0A1422] border border-[#14243A]">
-              <span className="text-xs text-slate-400">Last Sync</span>
+              <span className="text-xs text-slate-400">Rounds</span>
               <span className="font-mono text-xs text-slate-300">
-                {Math.floor((Date.now() - data.lastSync.getTime()) / 60000)} min ago
+                {TRAINING_STATUS.roundsCompleted}
               </span>
             </div>
 
             <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#0A1422] border border-[#14243A]">
-              <span className="text-xs text-slate-400">Model Version</span>
+              <span className="text-xs text-slate-400">Model</span>
               <span className="font-mono text-xs text-slate-300">
-                v48.2-fedavg
+                DP-FedAvg
               </span>
             </div>
 
@@ -221,10 +204,8 @@ export const StateDetailCard = ({
 
           <div className="p-3 rounded-lg bg-[#0A1422] border border-[#14243A] space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-400">Telemetry Stream</span>
-              <span className="font-mono text-slate-200">
-                {state.status === 'alert' ? 'SIMULATED OUTAGE' : 'STABLE'}
-              </span>
+              <span className="text-slate-400">Source</span>
+              <span className="font-mono text-[#B8FF65]">Simulated regional client data</span>
             </div>
 
             <div className="flex items-center justify-between text-xs">
@@ -233,8 +214,8 @@ export const StateDetailCard = ({
             </div>
 
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-400">Encryption</span>
-              <span className="font-mono text-[#B8FF65]">AES-256-GCM</span>
+              <span className="text-slate-400">Privacy</span>
+              <span className="font-mono text-slate-200">Federated (No raw data shared)</span>
             </div>
           </div>
         </section>
@@ -260,8 +241,9 @@ export const StateDetailCard = ({
         <button
           className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#38BDF8]/15 hover:bg-[#38BDF8]/25 border border-[#38BDF8]/40 text-sm font-medium text-[#38BDF8] transition-all"
           onClick={() => {
-            // Future: Navigate to detailed state analytics page
-            console.log('Navigate to detailed analytics for', state.name);
+            if (onNavigateToAnalysis) {
+              onNavigateToAnalysis(state.name);
+            }
           }}
         >
           <TrendingUp className="w-4 h-4" />

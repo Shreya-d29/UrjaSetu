@@ -32,9 +32,71 @@ interface StreamReplayData {
 
 const streamData = streamReplayData as StreamReplayData;
 
-export const MeterIntelligencePage: React.FC = () => {
+// Seeded RNG using mulberry32
+function mulberry32(a: number): () => number {
+  return function() {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = t + Math.imul(t ^ (t >>> 7), 61 | t) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Fisher-Yates shuffle with seeded RNG
+function shuffleWithSeed<T>(array: T[], seed: number): T[] {
+  const result = [...array];
+  const rng = mulberry32(seed);
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+// Error Boundary component
+interface MeterIntelligenceErrorBoundaryState {
+  hasError: boolean;
+}
+
+class MeterIntelligenceErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  MeterIntelligenceErrorBoundaryState
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="h-full flex items-center justify-center bg-[#050B14] text-slate-100 p-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2">Something went wrong loading this page</h2>
+            <p className="text-slate-400">Please refresh and try again.</p>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+const MeterIntelligencePageContent: React.FC = () => {
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+
+  // Shuffle stream records once with seeded shuffle (seed=42)
+  const shuffledStream = useMemo(
+    () => shuffleWithSeed(streamData?.stream ?? [], 42),
+    []
+  );
 
   // Live Grid Monitor state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -52,7 +114,7 @@ export const MeterIntelligencePage: React.FC = () => {
   const [anomalyRateHistory, setAnomalyRateHistory] = useState<number[]>([]);
   const intervalRef = useRef<number | null>(null);
 
-  const totalRecords = streamData.stream.length;
+  const totalRecords = shuffledStream?.length ?? 0;
 
   // Playback control
   useEffect(() => {
@@ -67,7 +129,11 @@ export const MeterIntelligencePage: React.FC = () => {
             return prev;
           }
           
-          const nextRecord = streamData.stream[prev];
+          const nextRecord = shuffledStream?.[prev];
+          
+          if (!nextRecord) {
+            return prev;
+          }
           
           // Add to feed (newest on top, max 20)
           setFeedRecords((prevFeed) => [nextRecord, ...prevFeed].slice(0, 20));
@@ -88,9 +154,9 @@ export const MeterIntelligencePage: React.FC = () => {
           
           // Update anomaly rate history (rolling window of last 50)
           setAnomalyRateHistory((prevHistory) => {
-            const recentRecords = streamData.stream.slice(Math.max(0, prev - 49), prev + 1);
+            const recentRecords = (shuffledStream ?? []).slice(Math.max(0, prev - 49), prev + 1);
             const anomalyCount = recentRecords.filter(r => r.score >= 0.7).length;
-            const rate = anomalyCount / recentRecords.length;
+            const rate = recentRecords.length > 0 ? anomalyCount / recentRecords.length : 0;
             return [...prevHistory, rate].slice(-100); // Keep last 100 points
           });
           
@@ -104,7 +170,7 @@ export const MeterIntelligencePage: React.FC = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isPlaying, currentIndex, playbackSpeed, totalRecords]);
+  }, [isPlaying, currentIndex, playbackSpeed, totalRecords, shuffledStream]);
 
   const togglePlayback = () => {
     if (currentIndex >= totalRecords - 1) {
@@ -215,10 +281,10 @@ export const MeterIntelligencePage: React.FC = () => {
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
-              URJASETU / ANALYTICS
+              URJASETU / ANOMALY
             </p>
             <h1 className="mt-2 text-3xl font-bold">
-              Meter Intelligence
+              Anomaly Intelligence
             </h1>
             <p className="mt-2 text-sm text-slate-400">
               Smart-meter telemetry, data quality and anomaly detection.
@@ -238,10 +304,7 @@ export const MeterIntelligencePage: React.FC = () => {
             Demo data — simulated
           </p>
           <p className="mt-1 text-sm text-slate-400">
-            These readings are deterministic sample data, not live smart-meter
-            telemetry. Scores come from an explainable statistical baseline,
-            not a trained machine-learning model. An anomaly is a signal for
-            investigation, not proof of theft.
+            The Live Grid Monitor and Threshold Explorer use held-out test samples scored by our simulated DP-FedAvg model. The Meter readings table below is separate demo data scored with a simple statistical baseline. An anomaly is a signal for investigation, not proof of theft.
           </p>
         </div>
 
@@ -502,13 +565,13 @@ export const MeterIntelligencePage: React.FC = () => {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
               <span>Model: DP-FedAvg</span>
               <span>•</span>
-              <span>Rounds: {streamData.metadata.total_rounds}</span>
+              <span>Rounds: {streamData?.metadata?.total_rounds ?? 'N/A'}</span>
               <span>•</span>
-              <span>Sigma: {streamData.metadata.dp_sigma}</span>
+              <span>Sigma: {streamData?.metadata?.dp_sigma ?? 'N/A'}</span>
               <span>•</span>
-              <span>Clip: {streamData.metadata.l2_clip_norm}</span>
+              <span>Clip: {streamData?.metadata?.l2_clip_norm ?? 'N/A'}</span>
               <span>•</span>
-              <span>Test ROC-AUC: {(streamData.metrics.roc_auc * 100).toFixed(2)}%</span>
+              <span>Test ROC-AUC: {streamData?.metrics?.roc_auc ? (streamData.metrics.roc_auc * 100).toFixed(2) : 'N/A'}%</span>
             </div>
           </div>
         </section>
@@ -664,6 +727,12 @@ export const MeterIntelligencePage: React.FC = () => {
     </div>
   );
 };
+
+export const MeterIntelligencePage: React.FC = () => (
+  <MeterIntelligenceErrorBoundary>
+    <MeterIntelligencePageContent />
+  </MeterIntelligenceErrorBoundary>
+);
 
 interface StatCardProps {
   title: string;

@@ -7,6 +7,7 @@ import { ExperimentsView } from '../experiments/ExperimentsView';
 import { DriftHealthView } from '../drift/DriftHealthView';
 import { SectionPlaceholder } from '../placeholders/SectionPlaceholder';
 import { InvestigationsPage, DataSourcesPage, SettingsPage } from '../placeholders/ExtraPages';
+import { StateDeepDive } from '../analysis/StateDeepDive';
 import { NAV_ITEMS } from '../../constants/navigation';
 import type { NavItemId } from '../../types';
 import { MeterIntelligencePage } from '../meters/MeterIntelligencePage';
@@ -15,14 +16,22 @@ interface AppShellProps {
   activeItem: NavItemId;
   onSelectItem: (id: NavItemId) => void;
   onReturnToLanding: () => void;
+  selectedState?: string;
 }
 
 export const AppShell: React.FC<AppShellProps> = ({
   activeItem,
   onSelectItem,
   onReturnToLanding,
+  selectedState,
 }) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [appSelectedState, setAppSelectedState] = useState<string | undefined>(selectedState);
+
+  const handleNavigateToStateAnalysis = (stateName: string) => {
+    setAppSelectedState(stateName);
+    onSelectItem('state-analysis');
+  };
 
   const currentNav = NAV_ITEMS.find((item) => item.id === activeItem) || NAV_ITEMS[0];
 
@@ -30,13 +39,15 @@ export const AppShell: React.FC<AppShellProps> = ({
     switch (activeItem) {
       // New primary routes
       case 'india-grid-explorer':
-        return <IndiaGridExplorer />;
+        return <IndiaGridExplorer onNavigateToStateAnalysis={handleNavigateToStateAnalysis} />;
       case 'anomaly-intelligence':
         return <MeterIntelligencePage />;
       case 'federated-learning':
         return <FederatedLearningView />;
       case 'experiments':
         return <ExperimentsView />;
+      case 'state-analysis':
+        return <StateDeepDive preselectedState={appSelectedState} />;
       case 'trust-model-health':
         return <DriftHealthView />;
       case 'investigations':
@@ -49,7 +60,7 @@ export const AppShell: React.FC<AppShellProps> = ({
       // Legacy routes (for backward compatibility)
       case 'overview':
       case 'grid-regions':
-        return <IndiaGridExplorer />;
+        return <IndiaGridExplorer onNavigateToStateAnalysis={handleNavigateToStateAnalysis} />;
       case 'meter-intelligence':
         return <MeterIntelligencePage />;
       case 'fl-lab':

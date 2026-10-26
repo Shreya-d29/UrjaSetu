@@ -90,7 +90,7 @@ def run_experiment(
     print("\n[4/4] Assembling Export Payload...")
     experiment_payload = {
         "metadata": {
-            "experiment_id": "EXP-URJA-FL-2026-R48",
+            "experiment_id": "EXP-URJA-FL-2026-R20",
             "model_architecture": "MLP-AnomalyNet (30 -> 64 -> 32 -> 1, ReLU, Dropout 0.2)",
             "task": "Electricity Consumption Anomaly & Theft Detection",
             "total_rounds": rounds,

@@ -49,6 +49,14 @@ export const NAV_ITEMS: NavItem[] = [
     icon: FlaskConical,
     description: 'Model configurations, metrics, and performance comparisons',
   },
+  {
+    id: 'state-analysis',
+    label: 'State Deep-Dive',
+    shortLabel: 'State Analysis',
+    section: 'INTELLIGENCE',
+    icon: Activity,
+    description: 'City-level analysis with anomaly scores and regional insights',
+  },
 
   // Trust & Monitoring
   {

@@ -210,38 +210,9 @@ const HYPERPARAMS: [string, string][] = [
 ];
 
 export const SettingsPage: React.FC = () => {
-  const [badges, setBadges] = useState(true);
-  const [compact, setCompact] = useState(false);
-  const [region, setRegion] = useState('ALL');
-
   return (
     <div className={wrap}>
-      <Header title="Settings" sub="Display preferences and read-only training configuration." />
-      <div className={`${card} mb-6 space-y-4`}>
-        <label className="flex items-center justify-between">
-          <span>Show simulated-data badges</span>
-          <input type="checkbox" checked={badges} onChange={(e) => setBadges(e.target.checked)} />
-        </label>
-        <label className="flex items-center justify-between">
-          <span>Compact density</span>
-          <input type="checkbox" checked={compact} onChange={(e) => setCompact(e.target.checked)} />
-        </label>
-        <label className="flex items-center justify-between">
-          <span>Default region filter</span>
-          <select
-            value={region}
-            onChange={(e) => setRegion(e.target.value)}
-            className="rounded border border-slate-600 bg-[#050B14] px-2 py-1"
-          >
-            {['ALL', 'NR', 'WR', 'SR', 'ER', 'NER'].map((r) => (
-              <option key={r}>{r}</option>
-            ))}
-          </select>
-        </label>
-        <p className="text-xs text-slate-500">
-          Preferences apply to this session only. Badges: {badges ? 'on' : 'off'}, density: {compact ? 'compact' : 'comfortable'}.
-        </p>
-      </div>
+      <Header title="Settings" sub="Federated learning training configuration (read-only)." />
       <div className={card}>
         <h2 className="mb-3 text-lg font-semibold">Federated learning configuration (read-only)</h2>
         <table className="w-full text-sm">
